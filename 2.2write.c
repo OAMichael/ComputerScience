@@ -15,18 +15,18 @@ int main(int argc, char* argv[])
 {
 	if(argc != 3)
 	{
-		fprintf(stderr, "Usage: %s filename tex-to-write\n", argv[0]);    // Failure in case of insufficient amount of arguments
+		fprintf(stderr, "Usage: %s filename tex-to-write\n", argv[0]);    	// Failure in case of insufficient amount of arguments
 		return 1;
 	}
 	// rw for user, read-only for group and others
-	int fd = open(argv[1], O_WRONLY | O_CREAT | O_TRUNC, 0644);			  // opening pointed file
+	int fd = open(argv[1], O_WRONLY | O_CREAT | O_TRUNC, 0644);			// opening pointed file
 	if (fd < 0) 
 	{
 		perror("Failed to open file for writing");
 		return 2;
 	}
 
-	if(dprintf(fd, "%s", argv[2]) < 0)									  // writing entered string into file
+	if(dprintf(fd, "%s", argv[2]) < 0)						// writing entered string into file
 	{
 		perror("Failure while writing");
 		return 3;
