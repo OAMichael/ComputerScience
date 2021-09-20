@@ -14,7 +14,7 @@ char* perms(const int bytes);          // Function returning string of permissio
 int main(int argc, char *argv[])
 {
    struct stat sb;                     // Creating stat structure
-   char* string;                       // String 
+   char* string;                       
 
    if (argc != 2) {
        fprintf(stderr, "Usage: %s <pathname>\n", argv[0]);  // Failure in case of insufficient amount of arguments
