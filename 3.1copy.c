@@ -29,12 +29,12 @@ int main(int argc, char* argv[])
     }
 
 
-    if((sb.st_mode & S_IFMT) != S_IFREG) {						  // Failure if file is not type of regular
+    if((sb.st_mode & S_IFMT) != S_IFREG) {				// Failure if file is not type of regular
     	fprintf(stderr, "Copied file is not 'Regular' type\n");
     	exit(EXIT_FAILURE);
     }
 
-	copying(argv[1], argv[2]);									  // invoking copying function
+	copying(argv[1], argv[2]);					// invoking copying function
 
 	return 0;
 }
@@ -43,14 +43,14 @@ int main(int argc, char* argv[])
 void copying(const char* first, const char* second)
 {
 	int fd1, fd2;
-	fd1 = open(first, O_RDONLY);								  // Opening the first file
+	fd1 = open(first, O_RDONLY);					// Opening the first file
 	if (fd1 < 0) 
 	{
 		perror("Failed to open copied file");
 		exit(EXIT_FAILURE);
 	}
 
-	fd2 = open(second, O_WRONLY | O_CREAT | O_TRUNC, 0644);		  // Opening the second file
+	fd2 = open(second, O_WRONLY | O_CREAT | O_TRUNC, 0644);		 // Opening the second file
 	if (fd2 < 0) 
 	{
 		perror("Failed to open file for writing");
@@ -61,18 +61,18 @@ void copying(const char* first, const char* second)
 	ssize_t tst = 1;
 	while(tst)
 	{
-		void* buf = calloc(4096, sizeof(char));    // allocation 4Kb (blocksize) of memory   
-		tst = read(fd1, buf, 4096);                // reading into this memory (buf)
+		void* buf = calloc(4096, sizeof(char));    		// allocation 4Kb (blocksize) of memory   
+		tst = read(fd1, buf, 4096);               		// reading into this memory (buf)
 		if(tst < 0) {
 			perror("Failed to read file");
-			free(buf);							   // free memory in case of failure
+			free(buf);					// free memory in case of failure
 			exit(EXIT_FAILURE);
 		}
 
-		if(writeall(fd2, buf, 4096) < 0)           // writing into second file from buf
+		if(writeall(fd2, buf, 4096) < 0)           		// writing into second file from buf
 		{
 			perror("Failure while writing");
-			free(buf);							   // free memory in case of failure
+			free(buf);					// free memory in case of failure
 			exit(EXIT_FAILURE);
 		}
 		free(buf);
