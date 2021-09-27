@@ -28,18 +28,27 @@ int main(int argc, char* argv[])
        exit(EXIT_FAILURE);
     }
 
-    switch(sb.st_mode & S_IFMT) {							// checking whether file type of regular, FIFO/pipe or symlink
-	case S_IFREG:	copying(argv[1], argv[2]); break;				// just copying file if original one is regular type	
+    switch(sb.st_mode & S_IFMT) {										// checking file type
+	case S_IFREG:	copying(argv[1], argv[2]); break;					// just copying file if original one is regular type	
 
-		        // creating FIFO file if original one is FIFO/pipe
-	case S_IFIFO:	if(mkfifo(argv[2], S_IFIFO) < 0) {	
+	case S_IFIFO:	if(mkfifo(argv[2], S_IFIFO) < 0) {					// creating FIFO file if original one is FIFO/pipe
 						fprintf(stderr, "Failed to create %s FIFO file\n", argv[2]);
 						exit(EXIT_FAILURE);
 					} 	break;
 	
-	case S_IFLNK:   CrtLink(argv[1], argv[2]); 	break;				// creating a new link if argv[1] is symlink
+	case S_IFLNK:   CrtLink(argv[1], argv[2]); 	break;					// creating a new link if argv[1] is symlink
 
-	default: 		fprintf(stderr, "File %s is not type of 'Regular', 'FIFO' or 'Symlink'\n", argv[1]); 
+	case S_IFBLK:   if(mknod(argv[2], sb.st_mode, sb.st_rdev) < 0) {
+						fprintf(stderr, "Failed to create new block device");      		// block device
+						exit(EXIT_FAILURE);     
+					} 	break;												
+
+	case S_IFCHR:	if(mknod(argv[2], sb.st_mode, sb.st_rdev) < 0) {
+						fprintf(stderr, "Failed to create new character device");      	// character device
+						exit(EXIT_FAILURE);     
+					} 	break;
+
+	default: 		fprintf(stderr, "File %s is not type of 'Block device', 'Character device', 'Regular', 'FIFO' or 'Symlink'\n", argv[1]); 
 					exit(EXIT_FAILURE);
 	}
 	return 0;
@@ -50,7 +59,7 @@ void copying(const char* first, const char* second)
 {
 
 	int fd1, fd2;
-	fd1 = open(first, O_RDONLY);							// Opening the first file
+	fd1 = open(first, O_RDONLY);										// Opening the first file
 	if (fd1 < 0) {
 		fprintf(stderr, "Failed to open %s\n", first);
 		exit(EXIT_FAILURE);
@@ -66,21 +75,21 @@ void copying(const char* first, const char* second)
 	ssize_t tst = 1;
 	while(tst)
 	{
-		void* buf = calloc(4096, sizeof(char));    				// allocation 4Kb (blocksize) of memory
-		tst = pread(fd1, buf, 4096, offset);               			// reading into this memory (buf)
+		void* buf = calloc(4096, sizeof(char));    						// allocation 4Kb (blocksize) of memory
+		tst = pread(fd1, buf, 4096, offset);               				// reading into this memory (buf)
 		if(tst < 0) {
 			fprintf(stderr, "Failed to read %s\n", first);
-			free(buf);							// free memory in case of failure
+			free(buf);													// free memory in case of failure
 			exit(EXIT_FAILURE);
 		}
 
-		if(pwriteall(fd2, buf, 4096, offset) < 0)          			// writing into second file from buf
+		if(pwriteall(fd2, buf, 4096, offset) < 0)          				// writing into second file from buf
 		{
 			fprintf(stderr, "Failure while writing to %s\n", second);
-			free(buf);							// free memory in case of failure
+			free(buf);													// free memory in case of failure
 			exit(EXIT_FAILURE);
 		}
-		offset += 4096;								// moving offset
+		offset += 4096;													// moving offset
 		free(buf);
 	}
 
@@ -114,17 +123,17 @@ ssize_t pwriteall(int fd, const void* buf, size_t count, int offset)
 
 void CrtLink(const char* pathname, const char* newname)
 {
-	char* buf = (char*)calloc(strlen(pathname) + 4, sizeof(char));			// memory allocation
+	char* buf = (char*)calloc(strlen(pathname) + 4, sizeof(char));		// memory allocation
 
 	if(readlink(pathname, buf, strlen(pathname) + 4) < 0) {				// reading the link
 		fprintf(stderr, "Failed to read link\n");
-		free(buf);								// free memory in case of failure
+		free(buf);														// free memory in case of failure
 		exit(EXIT_FAILURE);
 	}
 
-	if (symlink(buf, newname) < 0) {                                    		// creating new link
+	if (symlink(buf, newname) < 0) {                                    // creating new link
 		fprintf(stderr, "Failed to create a  new link\n");
-		free(buf);								// free memory in case of failure
+		free(buf);														// free memory in case of failure
 		exit(EXIT_FAILURE);
 	}
 }
