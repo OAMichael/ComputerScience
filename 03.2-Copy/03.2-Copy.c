@@ -9,74 +9,83 @@
 
 #include <unistd.h>
 
+// Copy function
+size_t copying(const char* first, const char* second);                 
 ssize_t pwriteall(int fd, const void* buf, size_t count, int offset);
-void copying(const char* first, const char* second);                   		// copy function
 
 
 int main(int argc, char* argv[])
 {
 	if(argc != 3)
 	{
-		fprintf(stderr, "Insufficient amount of arguments\n");         	// Failure in case of insufficient amount of arguments
-		exit(EXIT_FAILURE);
+		// Failure in case of insufficient amount of arguments
+		fprintf(stderr, "Insufficient amount of arguments\n");
+		return 1;
 	}
 
 	struct stat sb;
 
-	if (lstat(argv[1], &sb) == -1) {
+	if (lstat(argv[1], &sb) == -1) 
+	{
        perror("lstat");
-       exit(EXIT_FAILURE);
+       return 2;
     }
 
-
-    if((sb.st_mode & S_IFMT) != S_IFREG) {					// Failure if file is not type of regular
+    // Failure if file is not type of regular
+    if((sb.st_mode & S_IFMT) != S_IFREG) 
+    {
     	fprintf(stderr, "File %s is not 'Regular' type\n", argv[1]);
-    	exit(EXIT_FAILURE);
+    	return 3;
     }
 
-	copying(argv[1], argv[2]);						// invoking copying function
+    // Invoking copying function
+	copying(argv[1], argv[2]);
 	
 	return 0;
 }
 
 
-void copying(const char* first, const char* second)
+size_t copying(const char* first, const char* second)
 {
-
 	int fd1, fd2;
-	fd1 = open(first, O_RDONLY);						// Opening the first file
+
+	// Opening the first file
+	fd1 = open(first, O_RDONLY);
 	if (fd1 < 0) 
 	{
 		perror("Failed to open copied file");
-		exit(EXIT_FAILURE);
+		return 4;
 	}
 
-	fd2 = open(second, O_WRONLY | O_CREAT | O_TRUNC, 0644);			// Opening the second file
+	// Opening the second file
+	fd2 = open(second, O_WRONLY | O_CREAT | O_TRUNC, 0644);
 	if (fd2 < 0) 
 	{
 		perror("Failed to open file for writing");
-		exit(EXIT_FAILURE);
+		return 5;
 	}
 
 	int offset = 0;
 	ssize_t tst = 1;
 	while(tst)
 	{
-		void* buf = calloc(4096, sizeof(char));    			// allocation 4Kb (blocksize) of memory
-		tst = pread(fd1, buf, 4096, offset);               		// reading into this memory (buf)
-		if(tst < 0) {
+		void* buf = calloc(4096, sizeof(char));    		// allocation 4Kb (blocksize) of memory
+		tst = pread(fd1, buf, 4096, offset);            // reading into this memory (buf)
+		if(tst < 0) 
+		{
 			perror("Failed to read file");
-			free(buf);						// free memory in case of failure
-			exit(EXIT_FAILURE);
+			free(buf);									// free memory in case of failure
+			return 6;
 		}
 
-		if(pwriteall(fd2, buf, 4096, offset) < 0)          		// writing into second file from buf
+		// Writing into second file from buf
+		if(pwriteall(fd2, buf, 4096, offset) < 0)
 		{
 			perror("Failure while writing");
-			free(buf);						// free memory in case of failure
-			exit(EXIT_FAILURE);
+			free(buf);									// free memory in case of failure
+			return 7;
 		}
-		offset += 4096;							// moving offset
+		offset += 4096;									// moving offset
 		free(buf);
 	}
 
@@ -84,14 +93,16 @@ void copying(const char* first, const char* second)
 	if(close(fd1) < 0)
 	{
 		perror("Failure while closing the first file");
-		exit(EXIT_FAILURE);
+		return 8;
 	}
 
 	if(close(fd2) < 0)
 	{
 		perror("Failure while closing the second file");
-		exit(EXIT_FAILURE);
+		return 9;
 	}
+
+	return 0;
 }
 
 
