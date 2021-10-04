@@ -39,7 +39,7 @@ int main(int argc, char* argv[])
 		case S_IFREG:	copying(argv[1], argv[2]); break;	
 
 		// Creating FIFO file if original one is FIFO/pipe
-		case S_IFIFO:	if(mkfifo(argv[2], S_IFIFO) < 0) 
+		case S_IFIFO:	if(mkfifo(argv[2], sb.st_mode) < 0) 
 						{
 							fprintf(stderr, "Failed to create %s FIFO file\n", argv[2]);
 							return 3;
