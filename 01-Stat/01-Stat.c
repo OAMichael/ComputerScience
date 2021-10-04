@@ -90,15 +90,15 @@ char* MyCtime(struct timespec* time)
 
 void FMode(struct stat* ptr)
 {
-   switch (ptr->st_mode & S_IFMT) 
-   {
-     case S_IFBLK:  puts("File type:                block device");            break;
-     case S_IFCHR:  puts("File type:                character device");        break;
-     case S_IFDIR:  puts("File type:                directory");               break;
-     case S_IFIFO:  puts("File type:                FIFO/pipe");               break;
-     case S_IFLNK:  puts("File type:                symlink");                 break;
-     case S_IFREG:  puts("File type:                regular file");            break;
-     case S_IFSOCK: puts("File type:                socket");                  break;
-     default:       puts("File type:                unknown?");                break;
-   }
+    switch (ptr->st_mode & S_IFMT) 
+    {
+        case S_IFBLK:  puts("File type:                block device");            break;
+        case S_IFCHR:  puts("File type:                character device");        break;
+        case S_IFDIR:  puts("File type:                directory");               break;
+        case S_IFIFO:  puts("File type:                FIFO/pipe");               break;
+        case S_IFLNK:  puts("File type:                symlink");                 break;
+        case S_IFREG:  puts("File type:                regular file");            break;
+        case S_IFSOCK: puts("File type:                socket");                  break;
+        default:       puts("File type:                unknown?");                break;
+    }
 }
