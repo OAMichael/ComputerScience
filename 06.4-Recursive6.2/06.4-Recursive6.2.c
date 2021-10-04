@@ -68,8 +68,9 @@ size_t PrintDir(const char* dir_name, int* nNestCtr)
 
 		printf("%s\n", entry->d_name);
 		if((entry_type == 'd') && !( ((strlen(entry->d_name) == 1) && (entry->d_name[0] == '.')) ||
-		 							 ((strlen(entry->d_name) == 2) && (entry->d_name[0] == '.') && (entry->d_name[1] == '.')) ))
+		                             ((strlen(entry->d_name) == 2) && (entry->d_name[0] == '.') && (entry->d_name[1] == '.')) ))
 		{	
+			// Increasing Nest Counter if file type is derectory
 			(*nNestCtr)++;
 			chdir(entry->d_name);
 			PrintDir(".", nNestCtr);
@@ -77,16 +78,16 @@ size_t PrintDir(const char* dir_name, int* nNestCtr)
 	}
 
 	closedir(dir_fd);
-
+	
+	// Going back to previous folder if it isn't main one
 	if(*nNestCtr != 0)
 	chdir("..");
-
+	
+	// Decreasing Nest Counter
 	(*nNestCtr)--;
 
 	return 0;
 }
-
-
 
 
 char dtype_char(unsigned dtype)
