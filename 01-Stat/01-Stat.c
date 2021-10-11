@@ -1,4 +1,5 @@
 #define _GNU_SOURCE
+#define PERMS_BITS 1023
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <time.h>
@@ -45,10 +46,25 @@ const char* fmode(unsigned mode)
 }
 
 
+void perms(char* buf, const unsigned buf_size, const unsigned mode)
+{
+    buf[0] = mode & S_IRUSR ? 'r' : '-';
+    buf[1] = mode & S_IWUSR ? 'w' : '-';
+    buf[2] = mode & S_IXUSR ? 'x' : '-';
+    buf[3] = mode & S_IRGRP ? 'r' : '-';
+    buf[4] = mode & S_IWGRP ? 'w' : '-';
+    buf[5] = mode & S_IXGRP ? 'x' : '-';
+    buf[6] = mode & S_IROTH ? 'r' : '-';
+    buf[7] = mode & S_IWOTH ? 'w' : '-';
+    buf[8] = mode & S_IXOTH ? 'x' : '-';
+}
+
+
 int main(int argc, char *argv[])
 {
    struct stat sb;
    char string[sizeof("YYYY-mm-dd HH:MM:SS.nnnnnnnnn +hhmm")];
+   char perm_str[sizeof("rwxrwxrwx")];
 
    if (argc != 2) 
    {
@@ -75,6 +91,10 @@ int main(int argc, char *argv[])
            (unsigned long) sb.st_mode);
 
    printf("Link count:               %ld\n", (long) sb.st_nlink);
+
+   perms(perm_str, sizeof(perm_str), sb.st_mode);
+   printf("Access:                   %o/%s\n", sb.st_mode & PERMS_BITS, perm_str);
+
    printf("Ownership:                UID=%ld   GID=%ld\n",
            (long) sb.st_uid, (long) sb.st_gid);
 
@@ -87,13 +107,13 @@ int main(int argc, char *argv[])
 
    tzset();
 
-   my_ctime(string, sizeof("YYYY-mm-dd HH:MM:SS.nnnnnnnnn +hhmm"), &sb.st_ctim);
+   my_ctime(string, sizeof(string), &sb.st_ctim);
    printf("Last status change:       %s\n", string);
 
-   my_ctime(string, sizeof("YYYY-mm-dd HH:MM:SS.nnnnnnnnn +hhmm"), &sb.st_atim);
+   my_ctime(string, sizeof(string), &sb.st_atim);
    printf("Last file access:         %s\n", string);
 
-   my_ctime(string, sizeof("YYYY-mm-dd HH:MM:SS.nnnnnnnnn +hhmm"), &sb.st_mtim);
+   my_ctime(string, sizeof(string), &sb.st_mtim);
    printf("Last file modification:   %s\n", string);
 
    return 0;
