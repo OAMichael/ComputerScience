@@ -1,3 +1,4 @@
+#define _GNU_SOURCE
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <time.h>
@@ -6,16 +7,48 @@
 #include <sys/sysmacros.h>
 
 
-//MyCtime() was made because strftime() does not print nanocesonds
-//thus, MyCtime() corrects it
-char* MyCtime(struct timespec* time);
-void FMode(struct stat* ptr);
+//my_ctime() was made because strftime() does not print nanocesonds
+//thus, my_ctime() corrects it
+int my_ctime(char* out_buf, size_t buf_len, const struct timespec* file_timestamp)
+{
+    //break UNIX timestamp into components
+    struct tm* ttime = localtime(&(file_timestamp->tv_sec));
+
+    // format string with date
+    char yyyymmdd_hhmmss[sizeof("YYYY-mm-dd HH:MM:SS")];
+    char tz_str[sizeof("+hhmm")];
+
+    // format timezone string
+    strftime(yyyymmdd_hhmmss, sizeof(yyyymmdd_hhmmss), "%F %T", ttime);
+    strftime(tz_str, sizeof(tz_str), "%z", ttime);
+
+    // build final result from string components
+    return snprintf(out_buf, buf_len, "%s.%09ld %s", yyyymmdd_hhmmss, file_timestamp->tv_nsec, tz_str);
+        
+}
+
+
+const char* fmode(unsigned mode)
+{
+    switch (mode & S_IFMT) 
+    {
+        case S_IFBLK:  return "block device";
+        case S_IFCHR:  return "character device";
+        case S_IFDIR:  return "directory";
+        case S_IFIFO:  return "FIFO/pipe";
+        case S_IFLNK:  return "symlink";
+        case S_IFREG:  return "regular file";
+        case S_IFSOCK: return "socket";
+        }
+
+     return "unknown?";
+}
 
 
 int main(int argc, char *argv[])
 {
    struct stat sb;
-   char* string;
+   char string[sizeof("YYYY-mm-dd HH:MM:SS.nnnnnnnnn +hhmm")];
 
    if (argc != 2) 
    {
@@ -34,7 +67,7 @@ int main(int argc, char *argv[])
    printf("ID of containing device:  [%lx,%lx]\n",
         (long) major(sb.st_dev), (long) minor(sb.st_dev));
 
-   FMode(&sb);
+   printf("File type                 %s\n", fmode(sb.st_mode));
 
    printf("I-node number:            %ld\n", (long) sb.st_ino);
 
@@ -54,51 +87,16 @@ int main(int argc, char *argv[])
 
    tzset();
 
-   string = MyCtime(&sb.st_ctim);
-   printf("Last status change:       %s", string);
-   free(string);
+   my_ctime(string, sizeof("YYYY-mm-dd HH:MM:SS.nnnnnnnnn +hhmm"), &sb.st_ctim);
+   printf("Last status change:       %s\n", string);
 
+   my_ctime(string, sizeof("YYYY-mm-dd HH:MM:SS.nnnnnnnnn +hhmm"), &sb.st_atim);
+   printf("Last file access:         %s\n", string);
 
-   string = MyCtime(&sb.st_atim);
-   printf("Last file access:         %s", string);
-   free(string);
-
-   string = MyCtime(&sb.st_mtim);
-   printf("Last file modification:   %s", string);
-   free(string);
+   my_ctime(string, sizeof("YYYY-mm-dd HH:MM:SS.nnnnnnnnn +hhmm"), &sb.st_mtim);
+   printf("Last file modification:   %s\n", string);
 
    return 0;
 
 }
 
-
-char* MyCtime(struct timespec* time)
-{
-
-    struct tm* ttime = localtime(&(time->tv_sec));
-    long int nsec = time->tv_nsec;
-
-    char* str = (char*)calloc(32, sizeof(char));
-    
-    strftime(str, 20, "%F %T", ttime);
-    sprintf(str + 19, ".%ld ", nsec);
-    strftime(str + 30, 7, "%z\n", ttime);
-
-    return str;
-}
-
-
-void FMode(struct stat* ptr)
-{
-    switch (ptr->st_mode & S_IFMT) 
-    {
-        case S_IFBLK:  puts("File type:                block device");            break;
-        case S_IFCHR:  puts("File type:                character device");        break;
-        case S_IFDIR:  puts("File type:                directory");               break;
-        case S_IFIFO:  puts("File type:                FIFO/pipe");               break;
-        case S_IFLNK:  puts("File type:                symlink");                 break;
-        case S_IFREG:  puts("File type:                regular file");            break;
-        case S_IFSOCK: puts("File type:                socket");                  break;
-        default:       puts("File type:                unknown?");                break;
-    }
-}

@@ -1,3 +1,3 @@
 # ComputerScience
 
-Every folder contains its task repectively
+Every folder contains its tasks repectively

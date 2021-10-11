@@ -8,7 +8,21 @@
 
 #include <unistd.h>
 
-ssize_t writeall(int fd, const void* buf, size_t count);
+
+ssize_t writeall(int fd, const void* buf, size_t count)
+{
+    size_t bytes_written = 0;
+    const uint8_t* buf_addr = buf;
+    while (bytes_written < count)
+    {
+        ssize_t res = write(fd, buf_addr + bytes_written, count - bytes_written);
+        if(res < 0)
+            return res;
+        
+        bytes_written += (size_t)res;
+    }
+    return (ssize_t)bytes_written;
+}
 
 
 int main(int argc, char* argv[])
@@ -16,7 +30,7 @@ int main(int argc, char* argv[])
     if(argc != 3)
     {
         // Failure in case of insufficient amount of arguments
-        fprintf(stderr, "Usage: %s filename tex-to-write\n", argv[0]);
+        fprintf(stderr, "Usage: %s filename text-to-write\n", argv[0]);
         return 1;
     }
 
@@ -31,6 +45,7 @@ int main(int argc, char* argv[])
     // Writing entered string into file
     if(writeall(fd, argv[2], strlen(argv[2])) < 0)
     {
+        close(fd);
         perror("Failure while writing");
         return 3;
     }
@@ -42,20 +57,5 @@ int main(int argc, char* argv[])
     }
 
     return 0;
-}
-
-
-ssize_t writeall(int fd, const void* buf, size_t count)
-{
-    size_t bytes_written = 0;
-    const uint8_t* buf_addr = buf;
-    while (bytes_written < count)
-    {
-        ssize_t res = write(fd, buf_addr + bytes_written, count - bytes_written);
-        if(res < 0)
-        return res;
-        bytes_written += res;
-    }
-    return (ssize_t)bytes_written;
 }
 

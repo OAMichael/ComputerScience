@@ -4,38 +4,6 @@
 #include <sys/stat.h>
 #include <unistd.h>
 
-char dtype_char(unsigned dtype);
-char mode_char(unsigned mode);
-
-int main()
-{
-    DIR* dir_fd = opendir(".");
-
-    if(!dir_fd)
-    {
-        perror("opendir");
-        return 1;
-    }
-
-    struct dirent* entry;
-
-    while ((entry = readdir(dir_fd)) != NULL)
-    {
-        char entry_type = dtype_char(entry->d_type);
-        if(entry_type == '?')
-        {
-            struct stat sb;
-            if(lstat(entry->d_name, &sb) == 0)
-                entry_type = mode_char(sb.st_mode);
-        }
-        printf("%c %s\n", entry_type, entry->d_name);
-    }
-
-    closedir(dir_fd);
-    return 0;
-}
-
-
 char dtype_char(unsigned dtype)
 {
     switch (dtype)
@@ -66,3 +34,33 @@ char mode_char(unsigned mode)
     }
     return '?';
 }
+
+
+int main(void)
+{
+    DIR* dir_fd = opendir(".");
+
+    if(!dir_fd)
+    {
+        perror("opendir");
+        return 1;
+    }
+
+    struct dirent* entry;
+
+    while ((entry = readdir(dir_fd)) != NULL)
+    {
+        char entry_type = dtype_char(entry->d_type);
+        if(entry_type == '?')
+        {
+            struct stat sb;
+            if(lstat(entry->d_name, &sb) == 0)
+                entry_type = mode_char(sb.st_mode);
+        }
+        printf("%c %s\n", entry_type, entry->d_name);
+    }
+
+    closedir(dir_fd);
+    return 0;
+}
+
