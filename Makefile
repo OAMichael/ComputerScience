@@ -111,160 +111,160 @@ depend:
 .PHONY : depend
 
 #=============================================================================
-# Target rules for targets named ./02-Write/02.1-Write
+# Target rules for targets named ./01-Stat/01-Stat.exe
 
 # Build rule for target.
-./02-Write/02.1-Write: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 ./02-Write/02.1-Write
-.PHONY : ./02-Write/02.1-Write
+./01-Stat/01-Stat.exe: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 ./01-Stat/01-Stat.exe
+.PHONY : ./01-Stat/01-Stat.exe
 
 # fast build rule for target.
-./02-Write/02.1-Write/fast:
-	$(MAKE) -f CMakeFiles/./02-Write/02.1-Write.dir/build.make CMakeFiles/./02-Write/02.1-Write.dir/build
-.PHONY : ./02-Write/02.1-Write/fast
+./01-Stat/01-Stat.exe/fast:
+	$(MAKE) -f CMakeFiles/./01-Stat/01-Stat.exe.dir/build.make CMakeFiles/./01-Stat/01-Stat.exe.dir/build
+.PHONY : ./01-Stat/01-Stat.exe/fast
 
 #=============================================================================
-# Target rules for targets named ./03-CopyEntries/03.STAR-Copy
+# Target rules for targets named ./03-CopyEntries/03.1-Copy.exe
 
 # Build rule for target.
-./03-CopyEntries/03.STAR-Copy: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 ./03-CopyEntries/03.STAR-Copy
-.PHONY : ./03-CopyEntries/03.STAR-Copy
+./03-CopyEntries/03.1-Copy.exe: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 ./03-CopyEntries/03.1-Copy.exe
+.PHONY : ./03-CopyEntries/03.1-Copy.exe
 
 # fast build rule for target.
-./03-CopyEntries/03.STAR-Copy/fast:
-	$(MAKE) -f CMakeFiles/./03-CopyEntries/03.STAR-Copy.dir/build.make CMakeFiles/./03-CopyEntries/03.STAR-Copy.dir/build
-.PHONY : ./03-CopyEntries/03.STAR-Copy/fast
+./03-CopyEntries/03.1-Copy.exe/fast:
+	$(MAKE) -f CMakeFiles/./03-CopyEntries/03.1-Copy.exe.dir/build.make CMakeFiles/./03-CopyEntries/03.1-Copy.exe.dir/build
+.PHONY : ./03-CopyEntries/03.1-Copy.exe/fast
 
 #=============================================================================
-# Target rules for targets named ./01-Stat/01-Stat
+# Target rules for targets named ./05-CopyOwn/05-Fchown.exe
 
 # Build rule for target.
-./01-Stat/01-Stat: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 ./01-Stat/01-Stat
-.PHONY : ./01-Stat/01-Stat
+./05-CopyOwn/05-Fchown.exe: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 ./05-CopyOwn/05-Fchown.exe
+.PHONY : ./05-CopyOwn/05-Fchown.exe
 
 # fast build rule for target.
-./01-Stat/01-Stat/fast:
-	$(MAKE) -f CMakeFiles/./01-Stat/01-Stat.dir/build.make CMakeFiles/./01-Stat/01-Stat.dir/build
-.PHONY : ./01-Stat/01-Stat/fast
+./05-CopyOwn/05-Fchown.exe/fast:
+	$(MAKE) -f CMakeFiles/./05-CopyOwn/05-Fchown.exe.dir/build.make CMakeFiles/./05-CopyOwn/05-Fchown.exe.dir/build
+.PHONY : ./05-CopyOwn/05-Fchown.exe/fast
 
 #=============================================================================
-# Target rules for targets named ./06-Readdir/06.1-Readdir
+# Target rules for targets named ./02-Write/02.2-Write.exe
 
 # Build rule for target.
-./06-Readdir/06.1-Readdir: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 ./06-Readdir/06.1-Readdir
-.PHONY : ./06-Readdir/06.1-Readdir
+./02-Write/02.2-Write.exe: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 ./02-Write/02.2-Write.exe
+.PHONY : ./02-Write/02.2-Write.exe
 
 # fast build rule for target.
-./06-Readdir/06.1-Readdir/fast:
-	$(MAKE) -f CMakeFiles/./06-Readdir/06.1-Readdir.dir/build.make CMakeFiles/./06-Readdir/06.1-Readdir.dir/build
-.PHONY : ./06-Readdir/06.1-Readdir/fast
+./02-Write/02.2-Write.exe/fast:
+	$(MAKE) -f CMakeFiles/./02-Write/02.2-Write.exe.dir/build.make CMakeFiles/./02-Write/02.2-Write.exe.dir/build
+.PHONY : ./02-Write/02.2-Write.exe/fast
 
 #=============================================================================
-# Target rules for targets named ./02-Write/02.2-Write
+# Target rules for targets named ./03-CopyEntries/03.STAR-Copy.exe
 
 # Build rule for target.
-./02-Write/02.2-Write: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 ./02-Write/02.2-Write
-.PHONY : ./02-Write/02.2-Write
+./03-CopyEntries/03.STAR-Copy.exe: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 ./03-CopyEntries/03.STAR-Copy.exe
+.PHONY : ./03-CopyEntries/03.STAR-Copy.exe
 
 # fast build rule for target.
-./02-Write/02.2-Write/fast:
-	$(MAKE) -f CMakeFiles/./02-Write/02.2-Write.dir/build.make CMakeFiles/./02-Write/02.2-Write.dir/build
-.PHONY : ./02-Write/02.2-Write/fast
+./03-CopyEntries/03.STAR-Copy.exe/fast:
+	$(MAKE) -f CMakeFiles/./03-CopyEntries/03.STAR-Copy.exe.dir/build.make CMakeFiles/./03-CopyEntries/03.STAR-Copy.exe.dir/build
+.PHONY : ./03-CopyEntries/03.STAR-Copy.exe/fast
 
 #=============================================================================
-# Target rules for targets named ./06-Readdir/06.2-Readdir
+# Target rules for targets named ./04-CopyPerm/04-Copy.exe
 
 # Build rule for target.
-./06-Readdir/06.2-Readdir: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 ./06-Readdir/06.2-Readdir
-.PHONY : ./06-Readdir/06.2-Readdir
+./04-CopyPerm/04-Copy.exe: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 ./04-CopyPerm/04-Copy.exe
+.PHONY : ./04-CopyPerm/04-Copy.exe
 
 # fast build rule for target.
-./06-Readdir/06.2-Readdir/fast:
-	$(MAKE) -f CMakeFiles/./06-Readdir/06.2-Readdir.dir/build.make CMakeFiles/./06-Readdir/06.2-Readdir.dir/build
-.PHONY : ./06-Readdir/06.2-Readdir/fast
+./04-CopyPerm/04-Copy.exe/fast:
+	$(MAKE) -f CMakeFiles/./04-CopyPerm/04-Copy.exe.dir/build.make CMakeFiles/./04-CopyPerm/04-Copy.exe.dir/build
+.PHONY : ./04-CopyPerm/04-Copy.exe/fast
 
 #=============================================================================
-# Target rules for targets named ./06-Readdir/06.3-Getdents
+# Target rules for targets named ./06-Readdir/06.2-Readdir.exe
 
 # Build rule for target.
-./06-Readdir/06.3-Getdents: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 ./06-Readdir/06.3-Getdents
-.PHONY : ./06-Readdir/06.3-Getdents
+./06-Readdir/06.2-Readdir.exe: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 ./06-Readdir/06.2-Readdir.exe
+.PHONY : ./06-Readdir/06.2-Readdir.exe
 
 # fast build rule for target.
-./06-Readdir/06.3-Getdents/fast:
-	$(MAKE) -f CMakeFiles/./06-Readdir/06.3-Getdents.dir/build.make CMakeFiles/./06-Readdir/06.3-Getdents.dir/build
-.PHONY : ./06-Readdir/06.3-Getdents/fast
+./06-Readdir/06.2-Readdir.exe/fast:
+	$(MAKE) -f CMakeFiles/./06-Readdir/06.2-Readdir.exe.dir/build.make CMakeFiles/./06-Readdir/06.2-Readdir.exe.dir/build
+.PHONY : ./06-Readdir/06.2-Readdir.exe/fast
 
 #=============================================================================
-# Target rules for targets named ./03-CopyEntries/03.1-Copy
+# Target rules for targets named ./02-Write/02.1-Write.exe
 
 # Build rule for target.
-./03-CopyEntries/03.1-Copy: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 ./03-CopyEntries/03.1-Copy
-.PHONY : ./03-CopyEntries/03.1-Copy
+./02-Write/02.1-Write.exe: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 ./02-Write/02.1-Write.exe
+.PHONY : ./02-Write/02.1-Write.exe
 
 # fast build rule for target.
-./03-CopyEntries/03.1-Copy/fast:
-	$(MAKE) -f CMakeFiles/./03-CopyEntries/03.1-Copy.dir/build.make CMakeFiles/./03-CopyEntries/03.1-Copy.dir/build
-.PHONY : ./03-CopyEntries/03.1-Copy/fast
+./02-Write/02.1-Write.exe/fast:
+	$(MAKE) -f CMakeFiles/./02-Write/02.1-Write.exe.dir/build.make CMakeFiles/./02-Write/02.1-Write.exe.dir/build
+.PHONY : ./02-Write/02.1-Write.exe/fast
 
 #=============================================================================
-# Target rules for targets named ./03-CopyEntries/03.2-Copy
+# Target rules for targets named ./06-Readdir/06.4-Recursive6.2.exe
 
 # Build rule for target.
-./03-CopyEntries/03.2-Copy: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 ./03-CopyEntries/03.2-Copy
-.PHONY : ./03-CopyEntries/03.2-Copy
+./06-Readdir/06.4-Recursive6.2.exe: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 ./06-Readdir/06.4-Recursive6.2.exe
+.PHONY : ./06-Readdir/06.4-Recursive6.2.exe
 
 # fast build rule for target.
-./03-CopyEntries/03.2-Copy/fast:
-	$(MAKE) -f CMakeFiles/./03-CopyEntries/03.2-Copy.dir/build.make CMakeFiles/./03-CopyEntries/03.2-Copy.dir/build
-.PHONY : ./03-CopyEntries/03.2-Copy/fast
+./06-Readdir/06.4-Recursive6.2.exe/fast:
+	$(MAKE) -f CMakeFiles/./06-Readdir/06.4-Recursive6.2.exe.dir/build.make CMakeFiles/./06-Readdir/06.4-Recursive6.2.exe.dir/build
+.PHONY : ./06-Readdir/06.4-Recursive6.2.exe/fast
 
 #=============================================================================
-# Target rules for targets named ./05-CopyOwn/05-Fchown
+# Target rules for targets named ./06-Readdir/06.1-Readdir.exe
 
 # Build rule for target.
-./05-CopyOwn/05-Fchown: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 ./05-CopyOwn/05-Fchown
-.PHONY : ./05-CopyOwn/05-Fchown
+./06-Readdir/06.1-Readdir.exe: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 ./06-Readdir/06.1-Readdir.exe
+.PHONY : ./06-Readdir/06.1-Readdir.exe
 
 # fast build rule for target.
-./05-CopyOwn/05-Fchown/fast:
-	$(MAKE) -f CMakeFiles/./05-CopyOwn/05-Fchown.dir/build.make CMakeFiles/./05-CopyOwn/05-Fchown.dir/build
-.PHONY : ./05-CopyOwn/05-Fchown/fast
+./06-Readdir/06.1-Readdir.exe/fast:
+	$(MAKE) -f CMakeFiles/./06-Readdir/06.1-Readdir.exe.dir/build.make CMakeFiles/./06-Readdir/06.1-Readdir.exe.dir/build
+.PHONY : ./06-Readdir/06.1-Readdir.exe/fast
 
 #=============================================================================
-# Target rules for targets named ./04-CopyPerm/04-Copy
+# Target rules for targets named ./06-Readdir/06.3-Getdents.exe
 
 # Build rule for target.
-./04-CopyPerm/04-Copy: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 ./04-CopyPerm/04-Copy
-.PHONY : ./04-CopyPerm/04-Copy
+./06-Readdir/06.3-Getdents.exe: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 ./06-Readdir/06.3-Getdents.exe
+.PHONY : ./06-Readdir/06.3-Getdents.exe
 
 # fast build rule for target.
-./04-CopyPerm/04-Copy/fast:
-	$(MAKE) -f CMakeFiles/./04-CopyPerm/04-Copy.dir/build.make CMakeFiles/./04-CopyPerm/04-Copy.dir/build
-.PHONY : ./04-CopyPerm/04-Copy/fast
+./06-Readdir/06.3-Getdents.exe/fast:
+	$(MAKE) -f CMakeFiles/./06-Readdir/06.3-Getdents.exe.dir/build.make CMakeFiles/./06-Readdir/06.3-Getdents.exe.dir/build
+.PHONY : ./06-Readdir/06.3-Getdents.exe/fast
 
 #=============================================================================
-# Target rules for targets named ./06-Readdir/06.4-Recursive6.2
+# Target rules for targets named ./03-CopyEntries/03.2-Copy.exe
 
 # Build rule for target.
-./06-Readdir/06.4-Recursive6.2: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 ./06-Readdir/06.4-Recursive6.2
-.PHONY : ./06-Readdir/06.4-Recursive6.2
+./03-CopyEntries/03.2-Copy.exe: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 ./03-CopyEntries/03.2-Copy.exe
+.PHONY : ./03-CopyEntries/03.2-Copy.exe
 
 # fast build rule for target.
-./06-Readdir/06.4-Recursive6.2/fast:
-	$(MAKE) -f CMakeFiles/./06-Readdir/06.4-Recursive6.2.dir/build.make CMakeFiles/./06-Readdir/06.4-Recursive6.2.dir/build
-.PHONY : ./06-Readdir/06.4-Recursive6.2/fast
+./03-CopyEntries/03.2-Copy.exe/fast:
+	$(MAKE) -f CMakeFiles/./03-CopyEntries/03.2-Copy.exe.dir/build.make CMakeFiles/./03-CopyEntries/03.2-Copy.exe.dir/build
+.PHONY : ./03-CopyEntries/03.2-Copy.exe/fast
 
 01-Stat/01-Stat.o: 01-Stat/01-Stat.c.o
 
@@ -272,7 +272,7 @@ depend:
 
 # target to build an object file
 01-Stat/01-Stat.c.o:
-	$(MAKE) -f CMakeFiles/./01-Stat/01-Stat.dir/build.make CMakeFiles/./01-Stat/01-Stat.dir/01-Stat/01-Stat.c.o
+	$(MAKE) -f CMakeFiles/./01-Stat/01-Stat.exe.dir/build.make CMakeFiles/./01-Stat/01-Stat.exe.dir/01-Stat/01-Stat.c.o
 .PHONY : 01-Stat/01-Stat.c.o
 
 01-Stat/01-Stat.i: 01-Stat/01-Stat.c.i
@@ -281,7 +281,7 @@ depend:
 
 # target to preprocess a source file
 01-Stat/01-Stat.c.i:
-	$(MAKE) -f CMakeFiles/./01-Stat/01-Stat.dir/build.make CMakeFiles/./01-Stat/01-Stat.dir/01-Stat/01-Stat.c.i
+	$(MAKE) -f CMakeFiles/./01-Stat/01-Stat.exe.dir/build.make CMakeFiles/./01-Stat/01-Stat.exe.dir/01-Stat/01-Stat.c.i
 .PHONY : 01-Stat/01-Stat.c.i
 
 01-Stat/01-Stat.s: 01-Stat/01-Stat.c.s
@@ -290,7 +290,7 @@ depend:
 
 # target to generate assembly for a file
 01-Stat/01-Stat.c.s:
-	$(MAKE) -f CMakeFiles/./01-Stat/01-Stat.dir/build.make CMakeFiles/./01-Stat/01-Stat.dir/01-Stat/01-Stat.c.s
+	$(MAKE) -f CMakeFiles/./01-Stat/01-Stat.exe.dir/build.make CMakeFiles/./01-Stat/01-Stat.exe.dir/01-Stat/01-Stat.c.s
 .PHONY : 01-Stat/01-Stat.c.s
 
 02-Write/02.1-Write.o: 02-Write/02.1-Write.c.o
@@ -299,7 +299,7 @@ depend:
 
 # target to build an object file
 02-Write/02.1-Write.c.o:
-	$(MAKE) -f CMakeFiles/./02-Write/02.1-Write.dir/build.make CMakeFiles/./02-Write/02.1-Write.dir/02-Write/02.1-Write.c.o
+	$(MAKE) -f CMakeFiles/./02-Write/02.1-Write.exe.dir/build.make CMakeFiles/./02-Write/02.1-Write.exe.dir/02-Write/02.1-Write.c.o
 .PHONY : 02-Write/02.1-Write.c.o
 
 02-Write/02.1-Write.i: 02-Write/02.1-Write.c.i
@@ -308,7 +308,7 @@ depend:
 
 # target to preprocess a source file
 02-Write/02.1-Write.c.i:
-	$(MAKE) -f CMakeFiles/./02-Write/02.1-Write.dir/build.make CMakeFiles/./02-Write/02.1-Write.dir/02-Write/02.1-Write.c.i
+	$(MAKE) -f CMakeFiles/./02-Write/02.1-Write.exe.dir/build.make CMakeFiles/./02-Write/02.1-Write.exe.dir/02-Write/02.1-Write.c.i
 .PHONY : 02-Write/02.1-Write.c.i
 
 02-Write/02.1-Write.s: 02-Write/02.1-Write.c.s
@@ -317,7 +317,7 @@ depend:
 
 # target to generate assembly for a file
 02-Write/02.1-Write.c.s:
-	$(MAKE) -f CMakeFiles/./02-Write/02.1-Write.dir/build.make CMakeFiles/./02-Write/02.1-Write.dir/02-Write/02.1-Write.c.s
+	$(MAKE) -f CMakeFiles/./02-Write/02.1-Write.exe.dir/build.make CMakeFiles/./02-Write/02.1-Write.exe.dir/02-Write/02.1-Write.c.s
 .PHONY : 02-Write/02.1-Write.c.s
 
 02-Write/02.2-Write.o: 02-Write/02.2-Write.c.o
@@ -326,7 +326,7 @@ depend:
 
 # target to build an object file
 02-Write/02.2-Write.c.o:
-	$(MAKE) -f CMakeFiles/./02-Write/02.2-Write.dir/build.make CMakeFiles/./02-Write/02.2-Write.dir/02-Write/02.2-Write.c.o
+	$(MAKE) -f CMakeFiles/./02-Write/02.2-Write.exe.dir/build.make CMakeFiles/./02-Write/02.2-Write.exe.dir/02-Write/02.2-Write.c.o
 .PHONY : 02-Write/02.2-Write.c.o
 
 02-Write/02.2-Write.i: 02-Write/02.2-Write.c.i
@@ -335,7 +335,7 @@ depend:
 
 # target to preprocess a source file
 02-Write/02.2-Write.c.i:
-	$(MAKE) -f CMakeFiles/./02-Write/02.2-Write.dir/build.make CMakeFiles/./02-Write/02.2-Write.dir/02-Write/02.2-Write.c.i
+	$(MAKE) -f CMakeFiles/./02-Write/02.2-Write.exe.dir/build.make CMakeFiles/./02-Write/02.2-Write.exe.dir/02-Write/02.2-Write.c.i
 .PHONY : 02-Write/02.2-Write.c.i
 
 02-Write/02.2-Write.s: 02-Write/02.2-Write.c.s
@@ -344,7 +344,7 @@ depend:
 
 # target to generate assembly for a file
 02-Write/02.2-Write.c.s:
-	$(MAKE) -f CMakeFiles/./02-Write/02.2-Write.dir/build.make CMakeFiles/./02-Write/02.2-Write.dir/02-Write/02.2-Write.c.s
+	$(MAKE) -f CMakeFiles/./02-Write/02.2-Write.exe.dir/build.make CMakeFiles/./02-Write/02.2-Write.exe.dir/02-Write/02.2-Write.c.s
 .PHONY : 02-Write/02.2-Write.c.s
 
 03-CopyEntries/03.1-Copy.o: 03-CopyEntries/03.1-Copy.c.o
@@ -353,7 +353,7 @@ depend:
 
 # target to build an object file
 03-CopyEntries/03.1-Copy.c.o:
-	$(MAKE) -f CMakeFiles/./03-CopyEntries/03.1-Copy.dir/build.make CMakeFiles/./03-CopyEntries/03.1-Copy.dir/03-CopyEntries/03.1-Copy.c.o
+	$(MAKE) -f CMakeFiles/./03-CopyEntries/03.1-Copy.exe.dir/build.make CMakeFiles/./03-CopyEntries/03.1-Copy.exe.dir/03-CopyEntries/03.1-Copy.c.o
 .PHONY : 03-CopyEntries/03.1-Copy.c.o
 
 03-CopyEntries/03.1-Copy.i: 03-CopyEntries/03.1-Copy.c.i
@@ -362,7 +362,7 @@ depend:
 
 # target to preprocess a source file
 03-CopyEntries/03.1-Copy.c.i:
-	$(MAKE) -f CMakeFiles/./03-CopyEntries/03.1-Copy.dir/build.make CMakeFiles/./03-CopyEntries/03.1-Copy.dir/03-CopyEntries/03.1-Copy.c.i
+	$(MAKE) -f CMakeFiles/./03-CopyEntries/03.1-Copy.exe.dir/build.make CMakeFiles/./03-CopyEntries/03.1-Copy.exe.dir/03-CopyEntries/03.1-Copy.c.i
 .PHONY : 03-CopyEntries/03.1-Copy.c.i
 
 03-CopyEntries/03.1-Copy.s: 03-CopyEntries/03.1-Copy.c.s
@@ -371,7 +371,7 @@ depend:
 
 # target to generate assembly for a file
 03-CopyEntries/03.1-Copy.c.s:
-	$(MAKE) -f CMakeFiles/./03-CopyEntries/03.1-Copy.dir/build.make CMakeFiles/./03-CopyEntries/03.1-Copy.dir/03-CopyEntries/03.1-Copy.c.s
+	$(MAKE) -f CMakeFiles/./03-CopyEntries/03.1-Copy.exe.dir/build.make CMakeFiles/./03-CopyEntries/03.1-Copy.exe.dir/03-CopyEntries/03.1-Copy.c.s
 .PHONY : 03-CopyEntries/03.1-Copy.c.s
 
 03-CopyEntries/03.2-Copy.o: 03-CopyEntries/03.2-Copy.c.o
@@ -380,7 +380,7 @@ depend:
 
 # target to build an object file
 03-CopyEntries/03.2-Copy.c.o:
-	$(MAKE) -f CMakeFiles/./03-CopyEntries/03.2-Copy.dir/build.make CMakeFiles/./03-CopyEntries/03.2-Copy.dir/03-CopyEntries/03.2-Copy.c.o
+	$(MAKE) -f CMakeFiles/./03-CopyEntries/03.2-Copy.exe.dir/build.make CMakeFiles/./03-CopyEntries/03.2-Copy.exe.dir/03-CopyEntries/03.2-Copy.c.o
 .PHONY : 03-CopyEntries/03.2-Copy.c.o
 
 03-CopyEntries/03.2-Copy.i: 03-CopyEntries/03.2-Copy.c.i
@@ -389,7 +389,7 @@ depend:
 
 # target to preprocess a source file
 03-CopyEntries/03.2-Copy.c.i:
-	$(MAKE) -f CMakeFiles/./03-CopyEntries/03.2-Copy.dir/build.make CMakeFiles/./03-CopyEntries/03.2-Copy.dir/03-CopyEntries/03.2-Copy.c.i
+	$(MAKE) -f CMakeFiles/./03-CopyEntries/03.2-Copy.exe.dir/build.make CMakeFiles/./03-CopyEntries/03.2-Copy.exe.dir/03-CopyEntries/03.2-Copy.c.i
 .PHONY : 03-CopyEntries/03.2-Copy.c.i
 
 03-CopyEntries/03.2-Copy.s: 03-CopyEntries/03.2-Copy.c.s
@@ -398,7 +398,7 @@ depend:
 
 # target to generate assembly for a file
 03-CopyEntries/03.2-Copy.c.s:
-	$(MAKE) -f CMakeFiles/./03-CopyEntries/03.2-Copy.dir/build.make CMakeFiles/./03-CopyEntries/03.2-Copy.dir/03-CopyEntries/03.2-Copy.c.s
+	$(MAKE) -f CMakeFiles/./03-CopyEntries/03.2-Copy.exe.dir/build.make CMakeFiles/./03-CopyEntries/03.2-Copy.exe.dir/03-CopyEntries/03.2-Copy.c.s
 .PHONY : 03-CopyEntries/03.2-Copy.c.s
 
 03-CopyEntries/03.STAR-Copy.o: 03-CopyEntries/03.STAR-Copy.c.o
@@ -407,7 +407,7 @@ depend:
 
 # target to build an object file
 03-CopyEntries/03.STAR-Copy.c.o:
-	$(MAKE) -f CMakeFiles/./03-CopyEntries/03.STAR-Copy.dir/build.make CMakeFiles/./03-CopyEntries/03.STAR-Copy.dir/03-CopyEntries/03.STAR-Copy.c.o
+	$(MAKE) -f CMakeFiles/./03-CopyEntries/03.STAR-Copy.exe.dir/build.make CMakeFiles/./03-CopyEntries/03.STAR-Copy.exe.dir/03-CopyEntries/03.STAR-Copy.c.o
 .PHONY : 03-CopyEntries/03.STAR-Copy.c.o
 
 03-CopyEntries/03.STAR-Copy.i: 03-CopyEntries/03.STAR-Copy.c.i
@@ -416,7 +416,7 @@ depend:
 
 # target to preprocess a source file
 03-CopyEntries/03.STAR-Copy.c.i:
-	$(MAKE) -f CMakeFiles/./03-CopyEntries/03.STAR-Copy.dir/build.make CMakeFiles/./03-CopyEntries/03.STAR-Copy.dir/03-CopyEntries/03.STAR-Copy.c.i
+	$(MAKE) -f CMakeFiles/./03-CopyEntries/03.STAR-Copy.exe.dir/build.make CMakeFiles/./03-CopyEntries/03.STAR-Copy.exe.dir/03-CopyEntries/03.STAR-Copy.c.i
 .PHONY : 03-CopyEntries/03.STAR-Copy.c.i
 
 03-CopyEntries/03.STAR-Copy.s: 03-CopyEntries/03.STAR-Copy.c.s
@@ -425,7 +425,7 @@ depend:
 
 # target to generate assembly for a file
 03-CopyEntries/03.STAR-Copy.c.s:
-	$(MAKE) -f CMakeFiles/./03-CopyEntries/03.STAR-Copy.dir/build.make CMakeFiles/./03-CopyEntries/03.STAR-Copy.dir/03-CopyEntries/03.STAR-Copy.c.s
+	$(MAKE) -f CMakeFiles/./03-CopyEntries/03.STAR-Copy.exe.dir/build.make CMakeFiles/./03-CopyEntries/03.STAR-Copy.exe.dir/03-CopyEntries/03.STAR-Copy.c.s
 .PHONY : 03-CopyEntries/03.STAR-Copy.c.s
 
 04-CopyPerm/04-Copy.o: 04-CopyPerm/04-Copy.c.o
@@ -434,7 +434,7 @@ depend:
 
 # target to build an object file
 04-CopyPerm/04-Copy.c.o:
-	$(MAKE) -f CMakeFiles/./04-CopyPerm/04-Copy.dir/build.make CMakeFiles/./04-CopyPerm/04-Copy.dir/04-CopyPerm/04-Copy.c.o
+	$(MAKE) -f CMakeFiles/./04-CopyPerm/04-Copy.exe.dir/build.make CMakeFiles/./04-CopyPerm/04-Copy.exe.dir/04-CopyPerm/04-Copy.c.o
 .PHONY : 04-CopyPerm/04-Copy.c.o
 
 04-CopyPerm/04-Copy.i: 04-CopyPerm/04-Copy.c.i
@@ -443,7 +443,7 @@ depend:
 
 # target to preprocess a source file
 04-CopyPerm/04-Copy.c.i:
-	$(MAKE) -f CMakeFiles/./04-CopyPerm/04-Copy.dir/build.make CMakeFiles/./04-CopyPerm/04-Copy.dir/04-CopyPerm/04-Copy.c.i
+	$(MAKE) -f CMakeFiles/./04-CopyPerm/04-Copy.exe.dir/build.make CMakeFiles/./04-CopyPerm/04-Copy.exe.dir/04-CopyPerm/04-Copy.c.i
 .PHONY : 04-CopyPerm/04-Copy.c.i
 
 04-CopyPerm/04-Copy.s: 04-CopyPerm/04-Copy.c.s
@@ -452,7 +452,7 @@ depend:
 
 # target to generate assembly for a file
 04-CopyPerm/04-Copy.c.s:
-	$(MAKE) -f CMakeFiles/./04-CopyPerm/04-Copy.dir/build.make CMakeFiles/./04-CopyPerm/04-Copy.dir/04-CopyPerm/04-Copy.c.s
+	$(MAKE) -f CMakeFiles/./04-CopyPerm/04-Copy.exe.dir/build.make CMakeFiles/./04-CopyPerm/04-Copy.exe.dir/04-CopyPerm/04-Copy.c.s
 .PHONY : 04-CopyPerm/04-Copy.c.s
 
 05-CopyOwn/05-Fchown.o: 05-CopyOwn/05-Fchown.c.o
@@ -461,7 +461,7 @@ depend:
 
 # target to build an object file
 05-CopyOwn/05-Fchown.c.o:
-	$(MAKE) -f CMakeFiles/./05-CopyOwn/05-Fchown.dir/build.make CMakeFiles/./05-CopyOwn/05-Fchown.dir/05-CopyOwn/05-Fchown.c.o
+	$(MAKE) -f CMakeFiles/./05-CopyOwn/05-Fchown.exe.dir/build.make CMakeFiles/./05-CopyOwn/05-Fchown.exe.dir/05-CopyOwn/05-Fchown.c.o
 .PHONY : 05-CopyOwn/05-Fchown.c.o
 
 05-CopyOwn/05-Fchown.i: 05-CopyOwn/05-Fchown.c.i
@@ -470,7 +470,7 @@ depend:
 
 # target to preprocess a source file
 05-CopyOwn/05-Fchown.c.i:
-	$(MAKE) -f CMakeFiles/./05-CopyOwn/05-Fchown.dir/build.make CMakeFiles/./05-CopyOwn/05-Fchown.dir/05-CopyOwn/05-Fchown.c.i
+	$(MAKE) -f CMakeFiles/./05-CopyOwn/05-Fchown.exe.dir/build.make CMakeFiles/./05-CopyOwn/05-Fchown.exe.dir/05-CopyOwn/05-Fchown.c.i
 .PHONY : 05-CopyOwn/05-Fchown.c.i
 
 05-CopyOwn/05-Fchown.s: 05-CopyOwn/05-Fchown.c.s
@@ -479,7 +479,7 @@ depend:
 
 # target to generate assembly for a file
 05-CopyOwn/05-Fchown.c.s:
-	$(MAKE) -f CMakeFiles/./05-CopyOwn/05-Fchown.dir/build.make CMakeFiles/./05-CopyOwn/05-Fchown.dir/05-CopyOwn/05-Fchown.c.s
+	$(MAKE) -f CMakeFiles/./05-CopyOwn/05-Fchown.exe.dir/build.make CMakeFiles/./05-CopyOwn/05-Fchown.exe.dir/05-CopyOwn/05-Fchown.c.s
 .PHONY : 05-CopyOwn/05-Fchown.c.s
 
 06-Readdir/06.1-Readdir.o: 06-Readdir/06.1-Readdir.c.o
@@ -488,7 +488,7 @@ depend:
 
 # target to build an object file
 06-Readdir/06.1-Readdir.c.o:
-	$(MAKE) -f CMakeFiles/./06-Readdir/06.1-Readdir.dir/build.make CMakeFiles/./06-Readdir/06.1-Readdir.dir/06-Readdir/06.1-Readdir.c.o
+	$(MAKE) -f CMakeFiles/./06-Readdir/06.1-Readdir.exe.dir/build.make CMakeFiles/./06-Readdir/06.1-Readdir.exe.dir/06-Readdir/06.1-Readdir.c.o
 .PHONY : 06-Readdir/06.1-Readdir.c.o
 
 06-Readdir/06.1-Readdir.i: 06-Readdir/06.1-Readdir.c.i
@@ -497,7 +497,7 @@ depend:
 
 # target to preprocess a source file
 06-Readdir/06.1-Readdir.c.i:
-	$(MAKE) -f CMakeFiles/./06-Readdir/06.1-Readdir.dir/build.make CMakeFiles/./06-Readdir/06.1-Readdir.dir/06-Readdir/06.1-Readdir.c.i
+	$(MAKE) -f CMakeFiles/./06-Readdir/06.1-Readdir.exe.dir/build.make CMakeFiles/./06-Readdir/06.1-Readdir.exe.dir/06-Readdir/06.1-Readdir.c.i
 .PHONY : 06-Readdir/06.1-Readdir.c.i
 
 06-Readdir/06.1-Readdir.s: 06-Readdir/06.1-Readdir.c.s
@@ -506,7 +506,7 @@ depend:
 
 # target to generate assembly for a file
 06-Readdir/06.1-Readdir.c.s:
-	$(MAKE) -f CMakeFiles/./06-Readdir/06.1-Readdir.dir/build.make CMakeFiles/./06-Readdir/06.1-Readdir.dir/06-Readdir/06.1-Readdir.c.s
+	$(MAKE) -f CMakeFiles/./06-Readdir/06.1-Readdir.exe.dir/build.make CMakeFiles/./06-Readdir/06.1-Readdir.exe.dir/06-Readdir/06.1-Readdir.c.s
 .PHONY : 06-Readdir/06.1-Readdir.c.s
 
 06-Readdir/06.2-Readdir.o: 06-Readdir/06.2-Readdir.c.o
@@ -515,7 +515,7 @@ depend:
 
 # target to build an object file
 06-Readdir/06.2-Readdir.c.o:
-	$(MAKE) -f CMakeFiles/./06-Readdir/06.2-Readdir.dir/build.make CMakeFiles/./06-Readdir/06.2-Readdir.dir/06-Readdir/06.2-Readdir.c.o
+	$(MAKE) -f CMakeFiles/./06-Readdir/06.2-Readdir.exe.dir/build.make CMakeFiles/./06-Readdir/06.2-Readdir.exe.dir/06-Readdir/06.2-Readdir.c.o
 .PHONY : 06-Readdir/06.2-Readdir.c.o
 
 06-Readdir/06.2-Readdir.i: 06-Readdir/06.2-Readdir.c.i
@@ -524,7 +524,7 @@ depend:
 
 # target to preprocess a source file
 06-Readdir/06.2-Readdir.c.i:
-	$(MAKE) -f CMakeFiles/./06-Readdir/06.2-Readdir.dir/build.make CMakeFiles/./06-Readdir/06.2-Readdir.dir/06-Readdir/06.2-Readdir.c.i
+	$(MAKE) -f CMakeFiles/./06-Readdir/06.2-Readdir.exe.dir/build.make CMakeFiles/./06-Readdir/06.2-Readdir.exe.dir/06-Readdir/06.2-Readdir.c.i
 .PHONY : 06-Readdir/06.2-Readdir.c.i
 
 06-Readdir/06.2-Readdir.s: 06-Readdir/06.2-Readdir.c.s
@@ -533,7 +533,7 @@ depend:
 
 # target to generate assembly for a file
 06-Readdir/06.2-Readdir.c.s:
-	$(MAKE) -f CMakeFiles/./06-Readdir/06.2-Readdir.dir/build.make CMakeFiles/./06-Readdir/06.2-Readdir.dir/06-Readdir/06.2-Readdir.c.s
+	$(MAKE) -f CMakeFiles/./06-Readdir/06.2-Readdir.exe.dir/build.make CMakeFiles/./06-Readdir/06.2-Readdir.exe.dir/06-Readdir/06.2-Readdir.c.s
 .PHONY : 06-Readdir/06.2-Readdir.c.s
 
 06-Readdir/06.3-Getdents.o: 06-Readdir/06.3-Getdents.c.o
@@ -542,7 +542,7 @@ depend:
 
 # target to build an object file
 06-Readdir/06.3-Getdents.c.o:
-	$(MAKE) -f CMakeFiles/./06-Readdir/06.3-Getdents.dir/build.make CMakeFiles/./06-Readdir/06.3-Getdents.dir/06-Readdir/06.3-Getdents.c.o
+	$(MAKE) -f CMakeFiles/./06-Readdir/06.3-Getdents.exe.dir/build.make CMakeFiles/./06-Readdir/06.3-Getdents.exe.dir/06-Readdir/06.3-Getdents.c.o
 .PHONY : 06-Readdir/06.3-Getdents.c.o
 
 06-Readdir/06.3-Getdents.i: 06-Readdir/06.3-Getdents.c.i
@@ -551,7 +551,7 @@ depend:
 
 # target to preprocess a source file
 06-Readdir/06.3-Getdents.c.i:
-	$(MAKE) -f CMakeFiles/./06-Readdir/06.3-Getdents.dir/build.make CMakeFiles/./06-Readdir/06.3-Getdents.dir/06-Readdir/06.3-Getdents.c.i
+	$(MAKE) -f CMakeFiles/./06-Readdir/06.3-Getdents.exe.dir/build.make CMakeFiles/./06-Readdir/06.3-Getdents.exe.dir/06-Readdir/06.3-Getdents.c.i
 .PHONY : 06-Readdir/06.3-Getdents.c.i
 
 06-Readdir/06.3-Getdents.s: 06-Readdir/06.3-Getdents.c.s
@@ -560,7 +560,7 @@ depend:
 
 # target to generate assembly for a file
 06-Readdir/06.3-Getdents.c.s:
-	$(MAKE) -f CMakeFiles/./06-Readdir/06.3-Getdents.dir/build.make CMakeFiles/./06-Readdir/06.3-Getdents.dir/06-Readdir/06.3-Getdents.c.s
+	$(MAKE) -f CMakeFiles/./06-Readdir/06.3-Getdents.exe.dir/build.make CMakeFiles/./06-Readdir/06.3-Getdents.exe.dir/06-Readdir/06.3-Getdents.c.s
 .PHONY : 06-Readdir/06.3-Getdents.c.s
 
 06-Readdir/06.4-Recursive6.2.o: 06-Readdir/06.4-Recursive6.2.c.o
@@ -569,7 +569,7 @@ depend:
 
 # target to build an object file
 06-Readdir/06.4-Recursive6.2.c.o:
-	$(MAKE) -f CMakeFiles/./06-Readdir/06.4-Recursive6.2.dir/build.make CMakeFiles/./06-Readdir/06.4-Recursive6.2.dir/06-Readdir/06.4-Recursive6.2.c.o
+	$(MAKE) -f CMakeFiles/./06-Readdir/06.4-Recursive6.2.exe.dir/build.make CMakeFiles/./06-Readdir/06.4-Recursive6.2.exe.dir/06-Readdir/06.4-Recursive6.2.c.o
 .PHONY : 06-Readdir/06.4-Recursive6.2.c.o
 
 06-Readdir/06.4-Recursive6.2.i: 06-Readdir/06.4-Recursive6.2.c.i
@@ -578,7 +578,7 @@ depend:
 
 # target to preprocess a source file
 06-Readdir/06.4-Recursive6.2.c.i:
-	$(MAKE) -f CMakeFiles/./06-Readdir/06.4-Recursive6.2.dir/build.make CMakeFiles/./06-Readdir/06.4-Recursive6.2.dir/06-Readdir/06.4-Recursive6.2.c.i
+	$(MAKE) -f CMakeFiles/./06-Readdir/06.4-Recursive6.2.exe.dir/build.make CMakeFiles/./06-Readdir/06.4-Recursive6.2.exe.dir/06-Readdir/06.4-Recursive6.2.c.i
 .PHONY : 06-Readdir/06.4-Recursive6.2.c.i
 
 06-Readdir/06.4-Recursive6.2.s: 06-Readdir/06.4-Recursive6.2.c.s
@@ -587,7 +587,7 @@ depend:
 
 # target to generate assembly for a file
 06-Readdir/06.4-Recursive6.2.c.s:
-	$(MAKE) -f CMakeFiles/./06-Readdir/06.4-Recursive6.2.dir/build.make CMakeFiles/./06-Readdir/06.4-Recursive6.2.dir/06-Readdir/06.4-Recursive6.2.c.s
+	$(MAKE) -f CMakeFiles/./06-Readdir/06.4-Recursive6.2.exe.dir/build.make CMakeFiles/./06-Readdir/06.4-Recursive6.2.exe.dir/06-Readdir/06.4-Recursive6.2.c.s
 .PHONY : 06-Readdir/06.4-Recursive6.2.c.s
 
 # Help Target
@@ -596,20 +596,20 @@ help:
 	@echo "... all (the default if no target is provided)"
 	@echo "... clean"
 	@echo "... depend"
-	@echo "... ./02-Write/02.1-Write"
-	@echo "... ./03-CopyEntries/03.STAR-Copy"
-	@echo "... ./01-Stat/01-Stat"
-	@echo "... ./06-Readdir/06.1-Readdir"
-	@echo "... ./02-Write/02.2-Write"
-	@echo "... ./06-Readdir/06.2-Readdir"
-	@echo "... ./06-Readdir/06.3-Getdents"
-	@echo "... ./03-CopyEntries/03.1-Copy"
-	@echo "... ./03-CopyEntries/03.2-Copy"
-	@echo "... ./05-CopyOwn/05-Fchown"
-	@echo "... ./04-CopyPerm/04-Copy"
+	@echo "... ./01-Stat/01-Stat.exe"
+	@echo "... ./03-CopyEntries/03.1-Copy.exe"
+	@echo "... ./05-CopyOwn/05-Fchown.exe"
+	@echo "... ./02-Write/02.2-Write.exe"
+	@echo "... ./03-CopyEntries/03.STAR-Copy.exe"
+	@echo "... ./04-CopyPerm/04-Copy.exe"
+	@echo "... ./06-Readdir/06.2-Readdir.exe"
+	@echo "... ./02-Write/02.1-Write.exe"
+	@echo "... ./06-Readdir/06.4-Recursive6.2.exe"
+	@echo "... ./06-Readdir/06.1-Readdir.exe"
+	@echo "... ./06-Readdir/06.3-Getdents.exe"
 	@echo "... rebuild_cache"
+	@echo "... ./03-CopyEntries/03.2-Copy.exe"
 	@echo "... edit_cache"
-	@echo "... ./06-Readdir/06.4-Recursive6.2"
 	@echo "... 01-Stat/01-Stat.o"
 	@echo "... 01-Stat/01-Stat.i"
 	@echo "... 01-Stat/01-Stat.s"
