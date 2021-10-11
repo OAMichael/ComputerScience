@@ -70,28 +70,43 @@ int main(int argc, char* argv[])
     }
 
     struct linux_dirent64* entry = NULL;
-    long int nread = getdents64(dir_fd, buf, BUF_SIZE);
+    long int nread = 0;
 
     int pos = 0;
-    while(pos < nread) 
+    while(1)
     {
-        entry = (struct linux_dirent64*) (buf + pos);
+        nread = getdents64(dir_fd, buf, BUF_SIZE);
 
-        if(entry->d_type == '?')
+        if(nread == -1)
         {
-            struct stat sb;
-            if(fstatat(dir_fd, entry->d_name, &sb, AT_SYMLINK_NOFOLLOW) < 0)
-            {
-                perror("fstatat");
-                printf("?");
-            }
-            else
-                entry->d_type = mode_char(sb.st_mode);
+            perror("getdents64");
+            close(dir_fd);
+            return 2;
         }
 
-        printf("%c|", dtype_char(entry->d_type));
-        printf("%s\n", entry->d_name);
-        pos += entry->d_reclen;
+        if(nread == 0)
+            break;
+
+        while(pos < nread) 
+        {
+            entry = (struct linux_dirent64*) (buf + pos);
+
+            if(entry->d_type == '?')
+            {
+                struct stat sb;
+                if(fstatat(dir_fd, entry->d_name, &sb, AT_SYMLINK_NOFOLLOW) < 0)
+                {
+                    perror("fstatat");
+                    printf("?");
+                }
+                else
+                    entry->d_type = mode_char(sb.st_mode);
+            }
+
+            printf("%c|", dtype_char(entry->d_type));
+            printf("%s\n", entry->d_name);
+            pos += entry->d_reclen;
+        }
     }
 
     close(dir_fd);
