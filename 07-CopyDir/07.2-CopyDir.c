@@ -5,6 +5,7 @@
 #include <unistd.h>
 #include <fcntl.h>
 #include <string.h>
+#include <errno.h>
 #include "../Library/util.h"
 
 
@@ -12,8 +13,6 @@ int main(int argc, char* argv[])
 {
     const char* old_dir_name = ".";
     const char* new_dir_name = NULL;
-
-    struct stat sb;
 
     // if user entered not enough parameters
     if(argc < 3)
@@ -34,12 +33,11 @@ int main(int argc, char* argv[])
 
     // if directory with name <new_dir_name> already exists, then it will be
     // just opened. Otherwise, it will be created by mkdir()
-    if(lstat(new_dir_name, &sb) < 0)
-        if(mkdir(new_dir_name, DIR_MODE) < 0)
-        {
-            perror("mkdir");
-            return -1;
-        }
+    if(mkdir(new_dir_name, DIR_MODE) < 0 && errno != EEXIST)
+    {
+        perror("mkdir");
+        return -1;
+    }
 
     // obtaining DIR* pointer of directory program will copy to and opening it
     DIR* new_dir_fd = opendir(new_dir_name);

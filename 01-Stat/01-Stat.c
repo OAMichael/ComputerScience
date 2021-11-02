@@ -46,7 +46,7 @@ const char* fmode(unsigned mode)
 }
 
 
-void perms(char* buf, const unsigned buf_size, const unsigned mode)
+void perms(char* buf, const unsigned mode)
 {
     buf[0] = mode & S_IRUSR ? 'r' : '-';
     buf[1] = mode & S_IWUSR ? 'w' : '-';
@@ -92,7 +92,7 @@ int main(int argc, char *argv[])
 
    printf("Link count:               %ld\n", (long) sb.st_nlink);
 
-   perms(perm_str, sizeof(perm_str), sb.st_mode);
+   perms(perm_str, sb.st_mode);
    printf("Access:                   %o/%s\n", sb.st_mode & PERMS_BITS, perm_str);
 
    printf("Ownership:                UID=%ld   GID=%ld\n",

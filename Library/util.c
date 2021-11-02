@@ -10,6 +10,7 @@
 #include <unistd.h>
 #include <fcntl.h>
 #include <string.h>
+#include <errno.h>
 #include "util.h"
 
 
@@ -211,8 +212,7 @@ ssize_t copy_dir(DIR* old_dir, DIR* new_dir)
 
                 // symlinks
                 case 'l':   {
-                                if(fstatat(new_dir_fd, entry->d_name, &sb, AT_SYMLINK_NOFOLLOW) < 0)
-                                    if(crt_linkat(old_dir_fd, new_dir_fd, entry->d_name, entry->d_name) < 0)
+                                    if(crt_linkat(old_dir_fd, new_dir_fd, entry->d_name, entry->d_name) < 0 && errno != EEXIST)
                                     {
                                         fprintf(stderr, "Failure while copying link <%s>\n", entry->d_name);
                                         result = -1;
@@ -223,8 +223,7 @@ ssize_t copy_dir(DIR* old_dir, DIR* new_dir)
                 // block devices and character devices can be created by the same function so they merged
                 case 'b':
                 case 'c':   {
-                                if(fstatat(new_dir_fd, entry->d_name, &sb, AT_SYMLINK_NOFOLLOW) < 0)
-                                    if(mknodat(new_dir_fd, entry->d_name, sb.st_mode, sb.st_rdev) < 0) 
+                                    if(mknodat(new_dir_fd, entry->d_name, sb.st_mode, sb.st_rdev) < 0 && errno != EEXIST) 
                                     {
                                         perror("mknodat");
                                         fprintf(stderr, "Failed to copy block/character device <%s>\n", entry->d_name);
@@ -235,8 +234,7 @@ ssize_t copy_dir(DIR* old_dir, DIR* new_dir)
 
                 // fifo/pipe
                 case 'p':   {   
-                                if(fstatat(new_dir_fd, entry->d_name, &sb, AT_SYMLINK_NOFOLLOW) < 0)
-                                    if(mkfifoat(new_dir_fd, entry->d_name, sb.st_mode) < 0)
+                                    if(mkfifoat(new_dir_fd, entry->d_name, sb.st_mode) < 0 && errno != EEXIST)
                                     {
                                         perror("mkfifoat");
                                         result = -1;
@@ -258,8 +256,11 @@ ssize_t copy_dir(DIR* old_dir, DIR* new_dir)
 
                     // if directory with name <entry->d_name> already exists, then it will be
                     // just opened. Otherwise, it will be created by mkdirat()
-                    if(fstatat(new_dir_fd, entry->d_name, &sb, AT_SYMLINK_NOFOLLOW) < 0)
-                        mkdirat(new_dir_fd, entry->d_name, DIR_MODE);
+                    if(mkdirat(new_dir_fd, entry->d_name, DIR_MODE) < 0 && errno != EEXIST)
+                    {
+                        perror("mkdirat");
+                        result = -1;
+                    }
 
                     int new_nest_dirfd = openat(new_dir_fd, entry->d_name, O_RDONLY | O_DIRECTORY);
                     if(new_nest_dirfd < 0)
