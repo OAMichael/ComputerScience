@@ -1,11 +1,11 @@
 # Process Information
 
-## Before building you have to install these files: `<capabilities.h>`:
+### Before building you have to install these files: `<capabilities.h>`:
 ```console
 $ sudo apt-get install libcap-dev
 ```
 
-and `<readproc.h>`:
+### and `<readproc.h>`:
 ```console
 $ sudo apt install libprocps-dev
 ```
@@ -48,4 +48,16 @@ Show information about environment
 ```console
 $ ./12-Id.exe e
 ```
+
+You can combine them the way you like:
+```console
+$ ./12-Id.exe n s u
+```
+```console
+$ ./12-Id.exe lcn
+```
+```console
+$ ./12-Id.exe sulncxe
+```
+
 
