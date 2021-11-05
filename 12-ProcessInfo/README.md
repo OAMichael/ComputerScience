@@ -1,6 +1,6 @@
 # Process Information
 
-### Before building you have to install these files: `<capabilities.h>`:
+### Before building you have to install these files: `<capability.h>`:
 ```console
 $ sudo apt-get install libcap-dev
 ```
