@@ -10,10 +10,10 @@ $ sudo apt-get install libcap-dev
 $ sudo apt install libprocps-dev
 ```
 
-#### These programs show a lot of different information about the process.
+### These programs show a lot of different information about the process.
 #### The main difference between them is that first one shows information about itself while the second can show same information about process with PID user enetered.
 
-#### The second difference is that 12-ProcInfoSelf uses `getrusage()` and `getrlimit()` function as it was supposed for the task. 12-ProcInfo uses some extra information obtained by `readproc()` function instead of two functions above.
+#### The second difference is that 12-ProcInfoSelf uses `getrusage()` and `getrlimit()` functions as it was supposed for the task. 12-ProcInfo uses some extra information obtained by `readproc()` function instead of two functions above.
 
 
 ### 12-ProcInfoSelf 
