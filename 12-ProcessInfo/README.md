@@ -10,7 +10,15 @@ $ sudo apt-get install libcap-dev
 $ sudo apt install libprocps-dev
 ```
 
-#### This program shows a lot of different information about the process (itself). 
+#### These programs show a lot of different information about the process.
+#### The main difference between them is that first one shows information about itself while the second can show same information about process with PID user enetered.
+
+#### The second difference is that 12-ProcInfoSelf uses `getrusage()` and `getrlimit()` function as it was supposed for the task. 12-ProcInfo uses some extra information obtained by `readproc()` function instead of two functions above.
+
+
+### 12-ProcInfoSelf 
+
+#### This one shows information about itself.  
 
 ##### By default it just displays information about PID, GID, etc. But there are some optional keys to make program show more.
 
@@ -61,3 +69,15 @@ $ ./12-Id.exe sulncxe
 ```
 
 
+### 12-ProcInfo
+
+#### This one shows information about process with PID user entered.
+
+##### The program is almost the same as 12-ProcInfoSelf, but there is a note:
+  You can enter PID number like that:
+
+```console
+$ ./12-ProcInfo.exe [PID] [flags]
+```
+
+  It is optionally. By default program shows information about itself as 12-ProcInfoSelf does.

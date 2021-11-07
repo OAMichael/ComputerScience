@@ -3,28 +3,21 @@
 #include <stdio.h>
 #include <sys/types.h>
 #include <stdlib.h>
-#include <linux/taskstats.h>
 #include <fcntl.h>
 #include <time.h>
 #include <string.h>
 #include <sched.h>
 #include <unistd.h>
 #include <poll.h>
-#include <grp.h>
 #include <limits.h>
 #include <sys/time.h>
 #include <sys/stat.h>
 #include <errno.h>
-#include <dirent.h>
-#include <ctype.h>
-#include <signal.h>
 #include <sys/resource.h>
 #include <proc/readproc.h>
 
 #define MAX_PID 4194304     // Maximum PID 2^22
 #define MAX_PID_LENGHT 7    // Maximum PID lenght
-#define MAX_TID 46332
-#define MAX_TID_LENGHT 5
 
 #define FLAG_SCHED 1        // 1 << 0
 #define FLAG_USAGE 2        // 1 << 1
@@ -36,6 +29,8 @@
 
 #define LIMITS_NUM 16       // Number of limits
 
+//#define TEST_RR           //define this to test round robin policy for scheduler
+
 
 void print_usage(struct rusage* rg);
 ssize_t display_proc_info(pid_t proc_id, int flags);
@@ -45,50 +40,6 @@ int main(int argc, char* argv[])
 {   
     int flags = 0;
 
-    pid_t proc_id = getpid();
-    
-    // The way how to find out eiter user entered [PID] or not
-    if(argc > 1)
-    {
-        unsigned letters = 0,
-                 numbers = 0;
-
-        for(long unsigned i = 0; i < strlen(argv[1]); i++)
-        {
-            if(isdigit(argv[1][i]))
-                numbers++;
-            else
-                letters++;
-        }
-
-        if(numbers > 0)
-        {
-            if(numbers != strlen(argv[1]))
-            {
-                printf("Usage: %s [PID] [flags]\n", argv[0]);
-                printf("Please enter correct PID\n");
-                return -1;
-            }
-            else
-                proc_id = atoi(argv[1]);
-        }
-
-        if(proc_id == 0)
-        {
-            printf("This process is Scheduler which isn't usual process to obtain information\n");
-            return -1;
-        }
-
-        // checking if process with PID = proc_id exists
-        if(kill(proc_id, 0) == -1 && errno == ESRCH)
-        {
-            printf("Such process doesn't exist\n");
-            return -1;
-        }
-
-    }
-
-    // Checking if some flags were entered
     for(int i = 1; i < argc; i++)
     {
         if(strchr(argv[i], 's'))
@@ -107,7 +58,8 @@ int main(int argc, char* argv[])
             flags = flags | FLAG_ENVIR;
     }
 
-    // Just dispalay all information dependent on entered flags
+    pid_t proc_id = getpid();
+
     if(display_proc_info(proc_id, flags) < 0)
             {
                 perror("display_proc_info");
@@ -146,81 +98,35 @@ ssize_t display_proc_info(pid_t proc_id, int flags)
 
     int result = 0;
 
-    // from readproc.h
-    proc_t proc_info;
-    memset(&proc_info, 0, sizeof(proc_info));
-    PROCTAB *pt_ptr = openproc(PROC_FILLSTATUS  | PROC_PID     | PROC_FILLCOM    | PROC_FILLENV  |
-                               PROC_FILLUSR     | PROC_FILLGRP | PROC_FILLMEM    | PROC_FILLSTAT |
-                               PROC_FILLCGROUP  | PROC_FILLOOM | PROC_FILLSUPGRP | PROC_FILLNS   |
-                               PROC_FILLSYSTEMD, &proc_id);
-
-    readproc(pt_ptr, &proc_info);
-    closeproc(pt_ptr);
-
-
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //                                                     IDs                                                        //
 
+    // NGROUPS_MAX defined in limits.h
+    int max_size = NGROUPS_MAX;
+    gid_t gid_list[max_size];
+
     printf("========================================================================================\n");
     printf("------------------------------------IDs and groups--------------------------------------\n");
-    
-    if(proc_info.cmdline != NULL)
-        printf("Process's name:               %s\n", *proc_info.cmdline);
-            
-    printf("Basename of executable file:  %s\n", proc_info.cmd);
-    printf("Process's state:              %c\n", proc_info.state);
+    printf("PID: %d, PPID: %d, PGID: %d, SID: %d\n", proc_id, getppid(), getpgid(0), getsid(0));
+    printf("TIDs: %d\n", gettid());
 
-    printf("PID: %d, PPID: %d\nPGID: %d, SID: %d\n", proc_id, proc_info.ppid, getpgid(proc_id), getsid(proc_id));
-
-
-    // Obtaining thread IDs of particular process
-    // Actually struct proc_t has member tid, but it is only one, main thread id
-
-    if(proc_info.nlwp == 1)
-        printf("TIDs: %d\n", proc_info.tid);
-    else
-    {
-    // The way of obtaining TIDs below allows to find out all TIDs of process 
-        char* tids_buf[MAX_TID];
-        char tid_str[sizeof("/proc//task") + MAX_TID_LENGHT + 1];       // max size of string
-        memset(tids_buf, 0, sizeof(tids_buf));
-
-        sprintf(tid_str, "/proc/%d/task", proc_id);
-
-        DIR* dir_fd = opendir(tid_str);
-
-        if(!dir_fd)
-        {
-            perror("opendir");
-            return 1;
-        }
-
-        int cntr = 0;
-        struct dirent* entry;
-        while ((entry = readdir(dir_fd)) != NULL)
-        {
-            if(strcmp(entry->d_name, ".") && strcmp(entry->d_name, ".."))
-            {
-                tids_buf[cntr] = entry->d_name;
-                cntr++;
-            }
-        }
-        closedir(dir_fd);
-
-        printf("TIDs: ");
-        for(int i = 0; i < cntr - 1; i++)
-            printf("%s, ", tids_buf[i]);
-
-        printf("%s\n", tids_buf[cntr - 1]);
-    }
-
-    printf("TGID: %d\n", proc_info.tgid);
-
-    printf("UID: %d, GID: %d\n", proc_info.ruid, proc_info.rgid);
+    printf("UID: %d, GID: %d\n", getuid(), getgid());
+    printf("Effective UID: %d\n", geteuid());
+    printf("Effective GID: %d\n", getegid());
 
     // number of process's groups
-    if(proc_info.supgid != NULL)
-        printf("Groups: %s\n", proc_info.supgid);
+    int groups_num = getgroups(max_size, gid_list);
+    if(groups_num < 0)
+    {
+        perror("getgroups");
+        result = -1;
+    }
+
+    printf("Groups: ");
+    for(int i = 0; i < groups_num - 1; i++)
+        printf("%d, ", gid_list[i]);
+
+    printf("%d\n", gid_list[groups_num - 1]);
 
     printf("========================================================================================\n");
 
@@ -239,6 +145,9 @@ ssize_t display_proc_info(pid_t proc_id, int flags)
                                                         // SCHED_RR = 2,    SCHED_BATCH = 3,  
                                                         // SCHED_IDLE = 5,  SCHED_DEADLINE = 6
 
+#ifdef TEST_RR
+policy = SCHED_RR;
+#endif
 
         printf("Policy:                                                           %d\n", policy);
         printf("Priority:                                                         %d\n", getpriority(PRIO_PROCESS, (unsigned int)proc_id));
@@ -337,7 +246,6 @@ ssize_t display_proc_info(pid_t proc_id, int flags)
         struct rlimit rm;
         printf("---------------------LIMITS---------------------------------SOFT-----HARD---------------\n");
 
-        // Limits masks
         const int limits[LIMITS_NUM] = 
         {
             RLIMIT_AS,
@@ -358,7 +266,6 @@ ssize_t display_proc_info(pid_t proc_id, int flags)
             RLIMIT_STACK
         };
 
-        // Terminal limit messages
         const char* limits_disp[LIMITS_NUM] = 
         {  
             "Process's virtual memory maximum size:       ",
@@ -379,24 +286,19 @@ ssize_t display_proc_info(pid_t proc_id, int flags)
             "Maximum size of the process stack in bytes:  "
         };
 
-        // Buffer all limit messages will be written to. Maximum lenght of such string = 45 + 20 + 1 + 1 + 1 + 20
-        // where 45 stands for limit message and spaces up to soft limit; 20 - soft limit itself; 1 - space;
-        // 1 - '/' symbol; 1 - again space; 20 - hard limit
+
         char limit_buf[sizeof("Process's virtual memory maximum size:       01234567890123456789 / 01234567890123456789\n")];
         char* offset = NULL;
         
         for(int i = 0; i < LIMITS_NUM; i++)
         {
             offset = limit_buf;
-
-            // Getting particular limit
-            if(prlimit(proc_id, limits[i], NULL, &rm) < 0)
+            if(getrlimit(limits[i], &rm) < 0)
             {
                 perror("getrlimit");
                 result = -1;
             }
 
-            // And printing it
             offset += sprintf(offset, "%s" , limits_disp[i]);
             if(rm.rlim_cur == RLIM_INFINITY) 
                 offset += sprintf(offset, "%20s / " , "Unlimited");
@@ -420,29 +322,74 @@ ssize_t display_proc_info(pid_t proc_id, int flags)
 
     if(flags & FLAG_NMSPC)
     {
-        printf("------------------------------------NAMESPACE INODES------------------------------------\n");
-
-        // all namespaces except control group namespace
-
-        const char* namespace_type[6] =
-        {
-            "ipc:",
-            "mnt:",
-            "net:",
-            "pid:",
-            "user:",
-            "uts:"
-        };
-
-        for(int i = 0; i < NUM_NS; i++)
-            printf("%-7s[%ld]\n", namespace_type[i], proc_info.ns[i]);
+        printf("---------------------------------------NAMESPACES---------------------------------------\n");
 
 
-        // cgroup namespace
         char buf[sizeof("cgroup:[0123456789]")];                        // longest namespace inode info string
         char ns_str[sizeof("/proc//ns/cgroup") + MAX_PID_LENGHT];       // max size of string
         memset(buf, 0, sizeof(buf));
 
+        // pid namespace
+        sprintf(ns_str, "/proc/%d/ns/pid", proc_id);
+
+        if(readlink(ns_str, buf, sizeof(buf)) < 0)
+        {
+            perror("readlink");
+            result = -1;
+        }
+        printf("%s\n", buf);
+
+        // mnt namespace
+        sprintf(ns_str, "/proc/%d/ns/mnt", proc_id);
+
+        if(readlink(ns_str, buf, sizeof(buf)) < 0)
+        {
+            perror("readlink");
+            result = -1;
+        }
+        printf("%s\n", buf);
+
+        // net namespace
+        sprintf(ns_str, "/proc/%d/ns/net", proc_id);
+
+        if(readlink(ns_str, buf, sizeof(buf)) < 0)
+        {
+            perror("readlink");
+            result = -1;
+        }
+        printf("%s\n", buf);
+
+        // ipc namespace
+        sprintf(ns_str, "/proc/%d/ns/ipc", proc_id);
+
+        if(readlink(ns_str, buf, sizeof(buf)) < 0)
+        {
+            perror("readlink");
+            result = -1;
+        }
+        printf("%s\n", buf);
+
+        // uts namespace
+        sprintf(ns_str, "/proc/%d/ns/uts", proc_id);
+
+        if(readlink(ns_str, buf, sizeof(buf)) < 0)
+        {
+            perror("readlink");
+            result = -1;
+        }
+        printf("%s\n", buf);
+
+        // user namespace
+        sprintf(ns_str, "/proc/%d/ns/user", proc_id);
+
+        if(readlink(ns_str, buf, sizeof(buf)) < 0)
+        {
+            perror("readlink");
+            result = -1;
+        }
+        printf("%s\n", buf);
+
+        // cgroup namespace
         sprintf(ns_str, "/proc/%d/ns/cgroup", proc_id);
 
         if(readlink(ns_str, buf, sizeof(buf)) < 0)
@@ -548,11 +495,22 @@ ssize_t display_proc_info(pid_t proc_id, int flags)
 
     if(flags & (FLAG_EXTEND | FLAG_ENVIR))
     {
+        // from readproc.h
+        proc_t proc_info;
+        memset(&proc_info, 0, sizeof(proc_info));
+        PROCTAB *pt_ptr = openproc(PROC_FILLSTATUS | PROC_PID     | PROC_FILLCOM | PROC_FILLENV |
+                                   PROC_FILLUSR    | PROC_FILLGRP, &proc_id);
+
+        readproc(pt_ptr, &proc_info);
+
+        closeproc(pt_ptr);
 
         if(flags & FLAG_EXTEND)
         {
             printf("----------------------------------------EXTENDED----------------------------------------\n");
-
+            
+            printf("Process's name:                                                   %s\n", *proc_info.cmdline);
+            printf("Process's state:                                                  %c\n",  proc_info.state);
             printf("Nice level:                                                       %ld\n", proc_info.nice);
             printf("Total number of pages:                                            %ld\n", proc_info.size);
             printf("Dirty pages:                                                      %ld\n", proc_info.dt);
@@ -570,9 +528,9 @@ ssize_t display_proc_info(pid_t proc_id, int flags)
             printf("Effective group name:                                             %s (%d)\n", proc_info.egroup, proc_info.egid);
             printf("Saved group name:                                                 %s (%d)\n", proc_info.sgroup, proc_info.sgid);
             printf("Filesystem group name:                                            %s\n", proc_info.fgroup);
+            printf("Basename of executable file:                                      %s\n", proc_info.cmd);
             printf("Full device number of controlling terminal (TTY):                 %d\n", proc_info.tty);
-            printf("Terminal process group id:                                        %d\n", proc_info.tpgid);
-
+            printf("Terminale process group id:                                       %d\n", proc_info.tpgid);
             printf("========================================================================================\n");
         }
 
@@ -580,16 +538,11 @@ ssize_t display_proc_info(pid_t proc_id, int flags)
         {
             printf("--------------------------------------ENVIRONMENT---------------------------------------\n");
 
-            if(proc_info.environ == NULL)
-                printf("No information about environment\n");
-            else
-            {   
-                int i = 0;
-                while(proc_info.environ[i])
-                {
-                    printf("%s\n", proc_info.environ[i]);
-                    i++;
-                }
+            int i = 0;
+            while(proc_info.environ[i])
+            {
+                printf("%s\n", proc_info.environ[i]);
+                i++;
             }
 
         }
@@ -598,4 +551,5 @@ ssize_t display_proc_info(pid_t proc_id, int flags)
 
 
     return result;
+
 }

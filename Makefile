@@ -58,15 +58,15 @@ OBJECT13 = ./07-CopyDir/07.2-CopyDir.o ./Library/util.o
 EXECUTABLE13 = ./07-CopyDir/07.2-CopyDir.exe
 
 ########################################################
-SOURCE_PATH17 = ./12-ProcessInfo/12-Id.c
-OBJECT17 = ./12-ProcessInfo/12-Id.o
-EXECUTABLE17 = ./12-ProcessInfo/12-Id.exe
+SOURCE_PATH17 = ./12-ProcessInfo/12-ProcInfo.c
+OBJECT17 = ./12-ProcessInfo/12-ProcInfo.o
+EXECUTABLE17 = ./12-ProcessInfo/12-ProcInfo.exe
 
 
 all: 01-Stat.o 01-Stat.exe 02.1-Write.o 02.1-Write.exe 02.2-Write.o 02.2-Write.exe 03.1-Copy.o 03.1-Copy.exe
 all: 03.2-Copy.o 03.2-Copy.exe 03.STAR-Copy.o 03.STAR-Copy.exe 04-Copy.o 04-Copy.exe 05-Fchown.o 05-Fchown.exe
 all: 06.1-Readdir.o 06.1-Readdir.exe 06.2-Readdir.o 06.2-Readdir.exe 06.3-Getdents.o 06.3-Getdents.exe
-all: 06.4-Recursive6.2.o 06.4-Recursive6.2.exe 07.2-CopyDir.o util.o 07.2-CopyDir.exe 12-Id.o 12-Id.exe
+all: 06.4-Recursive6.2.o 06.4-Recursive6.2.exe 07.2-CopyDir.o util.o 07.2-CopyDir.exe 12-ProcInfo.o 12-ProcInfo.exe
 
 #################################################################
 01-Stat.o: $(SOURCE_PATH1)
@@ -150,10 +150,10 @@ util.o: $(LIB_PATH)
 07.2-CopyDir.exe: ./07-CopyDir/07.2-CopyDir.o ./Library/util.o
 	$(CC) $(OBJECT13) -o $(EXECUTABLE13) 
 #################################################################
-12-Id.o: $(SOURCE_PATH17)
+12-ProcInfo.o: $(SOURCE_PATH17)
 	$(CC) $(CFLAGS) -c $(SOURCE_PATH17) -o $(OBJECT17)
 
-12-Id.exe: $(OBJECT17)
+12-ProcInfo.exe: $(OBJECT17)
 	$(CC) $(OBJECT17) -lcap -lprocps -o $(EXECUTABLE17)
 #################################################################
 
