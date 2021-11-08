@@ -24,48 +24,48 @@ $ sudo apt install libprocps-dev
 
 Show information about scheduler:
 ```console
-$ ./12-Id.exe s
+$ ./12-ProcInfoSelf.exe s
 ```
 
 Show information about resource usage:
 ```console
-$ ./12-Id.exe u
+$ ./12-ProcInfoSelf.exe u
 ```
 
 Show information about resource limits:
 ```console
-$ ./12-Id.exe l
+$ ./12-ProcInfoSelf.exe l
 ```
 
 Show information about namespaces:
 ```console
-$ ./12-Id.exe n
+$ ./12-ProcInfoSelf.exe n
 ```
 
 Show information about capabilities:
 ```console
-$ ./12-Id.exe c
+$ ./12-ProcInfoSelf.exe c
 ```
 
 Show extra information (nice level, stack size, TTY etc.)
 ```console
-$ ./12-Id.exe x
+$ ./12-ProcInfoSelf.exe x
 ```
 
 Show information about environment
 ```console
-$ ./12-Id.exe e
+$ ./12-ProcInfoSelf.exe e
 ```
 
 You can combine them the way you like:
 ```console
-$ ./12-Id.exe n s u
+$ ./12-ProcInfoSelf.exe n s u
 ```
 ```console
-$ ./12-Id.exe lcn
+$ ./12-ProcInfoSelf.exe lcn
 ```
 ```console
-$ ./12-Id.exe sulncxe
+$ ./12-ProcInfoSelf.exe sulncxe
 ```
 
 

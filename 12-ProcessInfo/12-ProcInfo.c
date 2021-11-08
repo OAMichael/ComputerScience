@@ -107,12 +107,12 @@ int main(int argc, char* argv[])
             flags = flags | FLAG_ENVIR;
     }
 
-    // Just dispalay all information dependent on entered flags
+    // Just display all information dependent on entered flags
     if(display_proc_info(proc_id, flags) < 0)
-            {
-                perror("display_proc_info");
-                return -1;
-            }
+    {
+        perror("display_proc_info");
+        return -1;
+    }
 
 
     return 0;
@@ -143,8 +143,22 @@ void print_usage(struct rusage* rg)
 
 ssize_t display_proc_info(pid_t proc_id, int flags)
 {
-
+    // Final returning value of this function
     int result = 0;
+
+    // Different states of a process
+    const char* state_list[9] = 
+    {
+        "Uninterruptible sleep",
+        "Idle",
+        "Running",
+        "Interruptible sleep",
+        "Stopped by signal",
+        "Stopped by debugger",
+        "Paging",
+        "Dead",
+        "Zombie"
+    };
 
     // from readproc.h
     proc_t proc_info;
@@ -168,14 +182,27 @@ ssize_t display_proc_info(pid_t proc_id, int flags)
         printf("Process's name:               %s\n", *proc_info.cmdline);
             
     printf("Basename of executable file:  %s\n", proc_info.cmd);
-    printf("Process's state:              %c\n", proc_info.state);
+
+    printf("Process's state:              %c ", proc_info.state);
+
+    switch(proc_info.state)
+    {
+        case 'D': printf("(%s)\n", state_list[0]); break;
+        case 'I': printf("(%s)\n", state_list[1]); break;
+        case 'R': printf("(%s)\n", state_list[2]); break;
+        case 'S': printf("(%s)\n", state_list[3]); break;
+        case 'T': printf("(%s)\n", state_list[4]); break;
+        case 't': printf("(%s)\n", state_list[5]); break;
+        case 'W': printf("(%s)\n", state_list[6]); break;
+        case 'X': printf("(%s)\n", state_list[7]); break;
+        case 'Z': printf("(%s)\n", state_list[8]); break;
+    }
 
     printf("PID: %d, PPID: %d\nPGID: %d, SID: %d\n", proc_id, proc_info.ppid, getpgid(proc_id), getsid(proc_id));
 
 
     // Obtaining thread IDs of particular process
     // Actually struct proc_t has member tid, but it is only one, main thread id
-
     if(proc_info.nlwp == 1)
         printf("TIDs: %d\n", proc_info.tid);
     else
@@ -195,6 +222,7 @@ ssize_t display_proc_info(pid_t proc_id, int flags)
             return 1;
         }
 
+        // Counter of TIDs
         int cntr = 0;
         struct dirent* entry;
         while ((entry = readdir(dir_fd)) != NULL)
@@ -516,6 +544,15 @@ ssize_t display_proc_info(pid_t proc_id, int flags)
             result = -1;
         }
 
+        cap_t caps_self = cap_get_pid(getpid());
+        if (caps == NULL) {
+            perror("cap_get_pid");
+            result = -1;
+        }
+
+        // I couldn't find better way to obtain information about ambient and bounding sets capabilities
+        // of a particular process. Just assigning to THIS process the same capabilities and
+        cap_set_proc(caps);
 
         for (int i = 0; i < CAP_LAST_CAP + 1; i++) 
         {
@@ -537,7 +574,11 @@ ssize_t display_proc_info(pid_t proc_id, int flags)
             printf("\n");
         }
 
+        // Granting THIS process capabilities it started with
+        cap_set_proc(caps_self);
+        cap_free(caps_self);
         cap_free(caps);
+
         printf("========================================================================================\n");
     }
 
