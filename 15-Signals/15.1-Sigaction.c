@@ -57,7 +57,7 @@ int main(void)
         SIGVTALRM,
         SIGXCPU,
         SIGXFSZ,
-        SIGWINCH,
+        SIGWINCH
     };
 
     struct sigaction recieved_signals = {};
@@ -78,7 +78,7 @@ int main(void)
     while(1)
     {
         pause();
-        printf("Signal %d(%s) came from process with PID=%d (UID=%d)\n", g_last_signal, strsignal(g_last_signal), g_from_who->si_pid, g_from_who->si_uid);
+        printf("Signal %d (%s) came from process with PID=%d (UID=%d)\n", g_last_signal, strsignal(g_last_signal), g_from_who->si_pid, g_from_who->si_uid);
     }
 
     return result;

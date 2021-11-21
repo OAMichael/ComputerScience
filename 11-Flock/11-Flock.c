@@ -48,6 +48,7 @@ int main(void)
 
     counter += atoi(buf);
 
+    printf("The program was executed %d times\n", counter);
     sprintf(number, "%d\n", counter);
 
     if(pwrite(fd, number, sizeof(number), 0) < 0)
