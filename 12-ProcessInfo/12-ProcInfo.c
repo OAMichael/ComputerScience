@@ -36,9 +36,10 @@
 
 #define LIMITS_NUM 16       // Number of limits
 
+#define SIGNAL_STRING       // Used to display signals as strings 
 
-void print_usage(struct rusage* rg);
-ssize_t display_proc_info(pid_t proc_id, int flags);
+
+ssize_t display_proc_info(const pid_t proc_id, const int flags);
 
 
 int main(int argc, char* argv[])
@@ -47,7 +48,7 @@ int main(int argc, char* argv[])
 
     pid_t proc_id = getpid();
     
-    // The way how to find out eiter user entered [PID] or not
+    // The way how to find out either user entered [PID] or not
     if(argc > 1)
     {
         unsigned letters = 0,
@@ -118,30 +119,7 @@ int main(int argc, char* argv[])
     return 0;
 }
 
-
-// function to print process's usage
-void print_usage(struct rusage* rg)
-{
-    printf("Seconds spent executing in user mode:                             %ld.%06ld\n", rg->ru_utime.tv_sec, rg->ru_utime.tv_usec);
-    printf("Seconds spent executing in kernel mode:                           %ld.%06ld\n", rg->ru_stime.tv_sec, rg->ru_stime.tv_usec);
-    printf("Maximum resident set size:                                        %ld\n", rg->ru_maxrss);
-    printf("Integral shared memory size:                                      %ld\n", rg->ru_ixrss);
-    printf("Integral unshared data size:                                      %ld\n", rg->ru_idrss);
-    printf("Integral unshared stack size:                                     %ld\n", rg->ru_isrss);
-    printf("Page reclaims (soft page faults):                                 %ld\n", rg->ru_minflt);
-    printf("Page faults (hard page faults):                                   %ld\n", rg->ru_majflt);
-    printf("Swaps:                                                            %ld\n", rg->ru_nswap);
-    printf("Block input operations:                                           %ld\n", rg->ru_inblock);
-    printf("Block output operations:                                          %ld\n", rg->ru_oublock);
-    printf("IPC messages sent:                                                %ld\n", rg->ru_msgsnd);
-    printf("IPC messages received:                                            %ld\n", rg->ru_msgrcv);
-    printf("Signals received:                                                 %ld\n", rg->ru_nsignals);
-    printf("Voluntary context switches:                                       %ld\n", rg->ru_nvcsw);
-    printf("Involuntary context switches:                                     %ld\n", rg->ru_nivcsw);
-}
-
-
-ssize_t display_proc_info(pid_t proc_id, int flags)
+ssize_t display_proc_info(const pid_t proc_id, const int flags)
 {
     // Final returning value of this function
     int result = 0;
@@ -298,7 +276,7 @@ ssize_t display_proc_info(pid_t proc_id, int flags)
         cpu_set_t mask;
     /*  struct cpu_set_t 
         {
-            __bits[__CPU_SETSIZE / __NCPUBITS];            just to remember
+            __bits[__CPU_SETSIZE / __NCPUBITS];            just to remember array and number of bits
         };
     */
 
@@ -327,35 +305,47 @@ ssize_t display_proc_info(pid_t proc_id, int flags)
 
     if(flags & FLAG_USAGE)
     {
-        struct rusage rg;
+        printf("------------------------------------------USAGE-----------------------------------------\n");
 
-        if(getrusage(RUSAGE_SELF, &rg) < 0)
-        {
-            perror("getrusage");
-            result = -1;
-        }
+        printf("User-mode CPU time accumulated by process:                        %lld\n", proc_info.utime);
+        printf("Kernel-mode CPU time accumulated by process:                      %lld\n", proc_info.stime);
+        printf("Cumulative user-mode CPU time of process and reaped children:     %lld\n", proc_info.cutime);
+        printf("Cumulative kernel-mode CPU time of process and reaped children:   %lld\n", proc_info.cstime);
+        printf("Total virtual memory in pages:                                    %ld\n",  proc_info.size);
+        printf("Resident non-swapped memory in pages:                             %ld\n",  proc_info.resident);
+        printf("Shared memory:                                                    %ld\n",  proc_info.share);
 
-        printf("---------------------------------------SELF USAGE---------------------------------------\n");
-        print_usage(&rg);
+        if(proc_info.rss_rlim == RLIM_INFINITY)
+            printf("Maximum resident set size:                                        Unlimited\n");
+        else
+            printf("Maximum resident set size:                                        %lu\n",  proc_info.rss_rlim);
 
-        if(getrusage(RUSAGE_CHILDREN, &rg) < 0)
-        {
-            perror("getrusage");
-            result = -1;
-        }
+        printf("Text resident set:                                                %ld\n",  proc_info.trs);
+        printf("Library resident set:                                             %ld\n",  proc_info.lrs);
+        printf("Data and stack resident set in pages:                             %ld\n",  proc_info.drs);
+        printf("Page reclaims (soft page faults):                                 %ld\n",  proc_info.min_flt);
+        printf("Page faults (hard page faults):                                   %ld\n",  proc_info.maj_flt);
+        printf("Swaps:                                                            %ld\n",  proc_info.vm_swap);
+        printf("Quit signal:                                                      %d\n",   proc_info.exit_signal);
 
-        printf("-------------------------------------CHILDREN USAGE-------------------------------------\n");
-        print_usage(&rg);
+#ifdef SIGNAL_STRING 
 
-        if(getrusage(RUSAGE_THREAD, &rg) < 0)
-        {
-            perror("getrusage");
-            result = -1;
-        }
+        printf("Pending signals:                                                  %s\n",   proc_info.signal);
+        printf("Blocked signals:                                                  %s\n",   proc_info.blocked);
+        printf("Ignored signals:                                                  %s\n",   proc_info.sigignore);
+        printf("Caught signals:                                                   %s\n",   proc_info.sigcatch);
+        printf("Per task pending signals:                                         %s\n",   proc_info._sigpnd);
 
-        printf("--------------------------------------THREAD USAGE--------------------------------------\n");
-        print_usage(&rg);
+#else
+        printf("Pending signals:                                                  %lld\n",   proc_info.signal);
+        printf("Blocked signals:                                                  %lld\n",   proc_info.blocked);
+        printf("Ignored signals:                                                  %lld\n",   proc_info.sigignore);
+        printf("Caught signals:                                                   %lld\n",   proc_info.sigcatch);
+        printf("Per task pending signals:                                         %lld\n",   proc_info._sigpnd);
+#endif
+
         printf("========================================================================================\n");
+
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -422,6 +412,7 @@ ssize_t display_proc_info(pid_t proc_id, int flags)
             {
                 perror("getrlimit");
                 result = -1;
+                continue;
             }
 
             // And printing it
@@ -551,7 +542,7 @@ ssize_t display_proc_info(pid_t proc_id, int flags)
         }
 
         // I couldn't find better way to obtain information about ambient and bounding sets capabilities
-        // of a particular process. Just assigning to THIS process the same capabilities and
+        // of a particular process. Just assigning to THIS process the same capabilities
         cap_set_proc(caps);
 
         for (int i = 0; i < CAP_LAST_CAP + 1; i++) 
@@ -600,10 +591,13 @@ ssize_t display_proc_info(pid_t proc_id, int flags)
             printf("Number of pages in virtual memory:                                %lu\n", proc_info.vsize);
             printf("Size of pages in virtual memory:                                  %lu\n", proc_info.vm_size);
             printf("Locked pages in Kbytes:                                           %lu\n", proc_info.vm_lock);
-            printf("Data size:                                                        %lu\n", proc_info.vm_data);
-            printf("Stack size:                                                       %lu\n", proc_info.vm_stack);
-            printf("Executable size:                                                  %lu\n", proc_info.vm_exe);
-            printf("Library size:                                                     %lu\n", proc_info.vm_lib);
+            printf("Anonymous memory size in Kb:                                      %lu\n", proc_info.vm_rss_anon);
+            printf("File-backed memory size in Kb:                                    %lu\n", proc_info.vm_rss_file);
+            printf("Shared memory size as Kb:                                         %lu\n", proc_info.vm_rss_shared);
+            printf("Data size as Kb:                                                  %lu\n", proc_info.vm_data);
+            printf("Stack size as Kb:                                                 %lu\n", proc_info.vm_stack);
+            printf("Executable size as Kb:                                            %lu\n", proc_info.vm_exe);
+            printf("Library size as Kb:                                               %lu\n", proc_info.vm_lib);
             printf("Real user name:                                                   %s (%d)\n", proc_info.ruser, proc_info.ruid);
             printf("Effective user name:                                              %s (%d)\n", proc_info.euser, proc_info.euid);
             printf("Saved user name:                                                  %s (%d)\n", proc_info.suser, proc_info.suid);
@@ -613,6 +607,8 @@ ssize_t display_proc_info(pid_t proc_id, int flags)
             printf("Filesystem group name:                                            %s\n", proc_info.fgroup);
             printf("Full device number of controlling terminal (TTY):                 %d\n", proc_info.tty);
             printf("Terminal process group id:                                        %d\n", proc_info.tpgid);
+            printf("OOM score:                                                        %d\n", proc_info.oom_score);
+            printf("OOM adjustment:                                                   %d\n", proc_info.oom_adj);
 
             printf("========================================================================================\n");
         }
