@@ -10,13 +10,6 @@ int main(int argc, char* argv[])
 
     const char* filesystem_name = ".";
 
-    if(argc < 2)
-    {
-        printf("Usage: ./09-Statvfs <Filesystem> <File>\n\n");
-        printf("If no file was entered, then information about <Filesystem> will be shown\n");
-        printf("If neither <File>, nor <Filesystem> were entered, then information about current Filesystem will be shown\n\n");
-    }
-
     if(argc > 1)
         filesystem_name = argv[1];
 

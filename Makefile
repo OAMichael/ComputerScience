@@ -3,159 +3,78 @@ CC = gcc
 CFLAGS = -O3 -Wall -Werror -Wextra -Wnarrowing -Wconversion -Wwrite-strings -Wcast-qual -Wundef -Wstrict-prototypes -Wbad-function-cast -Wlogical-op -Wreturn-type
 
 LIB_PATH = ./Library/util.c
+LIB_OBJ  = ./Library/util.o
 
-########################################################
-SOURCE_PATH1 = ./01-Stat/01-Stat.c
-OBJECT1 = ./01-Stat/01-Stat.o
-EXECUTABLE1 = ./01-Stat/01-Stat.exe
-########################################################
-SOURCE_PATH2 = ./02-Write/02.1-Write.c
-OBJECT2 = ./02-Write/02.1-Write.o
-EXECUTABLE2 = ./02-Write/02.1-Write.exe
-########################################################
-SOURCE_PATH3 = ./02-Write/02.2-Write.c
-OBJECT3 = ./02-Write/02.2-Write.o
-EXECUTABLE3 = ./02-Write/02.2-Write.exe
-########################################################
-SOURCE_PATH4 = ./03-CopyEntries/03.1-Copy.c
-OBJECT4 = ./03-CopyEntries/03.1-Copy.o
-EXECUTABLE4 = ./03-CopyEntries/03.1-Copy.exe
-########################################################
-SOURCE_PATH5 = ./03-CopyEntries/03.2-Copy.c
-OBJECT5 = ./03-CopyEntries/03.2-Copy.o
-EXECUTABLE5 = ./03-CopyEntries/03.2-Copy.exe
-########################################################
-SOURCE_PATH6 = ./03-CopyEntries/03.STAR-Copy.c
-OBJECT6 = ./03-CopyEntries/03.STAR-Copy.o
-EXECUTABLE6 = ./03-CopyEntries/03.STAR-Copy.exe
-########################################################
-SOURCE_PATH7 = ./04-CopyPerm/04-Copy.c
-OBJECT7 = ./04-CopyPerm/04-Copy.o
-EXECUTABLE7 = ./04-CopyPerm/04-Copy.exe
-########################################################
-SOURCE_PATH8 = ./05-CopyOwn/05-Fchown.c
-OBJECT8 = ./05-CopyOwn/05-Fchown.o
-EXECUTABLE8 = ./05-CopyOwn/05-Fchown.exe
-########################################################
-SOURCE_PATH9 = ./06-Readdir/06.1-Readdir.c
-OBJECT9 = ./06-Readdir/06.1-Readdir.o
-EXECUTABLE9 = ./06-Readdir/06.1-Readdir.exe
-########################################################
-SOURCE_PATH10 = ./06-Readdir/06.2-Readdir.c
-OBJECT10 = ./06-Readdir/06.2-Readdir.o
-EXECUTABLE10 = ./06-Readdir/06.2-Readdir.exe
-########################################################
-SOURCE_PATH11 = ./06-Readdir/06.3-Getdents.c
-OBJECT11 = ./06-Readdir/06.3-Getdents.o
-EXECUTABLE11 = ./06-Readdir/06.3-Getdents.exe
-########################################################
-SOURCE_PATH12 = ./06-Readdir/06.4-Recursive6.2.c
-OBJECT12 = ./06-Readdir/06.4-Recursive6.2.o
-EXECUTABLE12 = ./06-Readdir/06.4-Recursive6.2.exe
-########################################################
-SOURCE_PATH13 = ./07-CopyDir/07.2-CopyDir.c
-OBJECT13 = ./07-CopyDir/07.2-CopyDir.o ./Library/util.o
-EXECUTABLE13 = ./07-CopyDir/07.2-CopyDir.exe
+.PHONY: 01-Stat	02-Write 03-CopyEntries 04-CopyPerm 05-CopyOwn 06-Readdir 07-CopyDir 09-Statvfs 10-Inotify 11-Flock 12-ProcessInfo 13-Wait 15-Signals
 
-########################################################
-SOURCE_PATH17 = ./12-ProcessInfo/12-ProcInfo.c
-OBJECT17 = ./12-ProcessInfo/12-ProcInfo.o
-EXECUTABLE17 = ./12-ProcessInfo/12-ProcInfo.exe
+all: 01-Stat 02-Write 03-CopyEntries 04-CopyPerm 05-CopyOwn 06-Readdir 07-CopyDir 09-Statvfs 10-Inotify 11-Flock 12-ProcessInfo 13-Wait 15-Signals
 
+01-Stat:
+	$(CC) $(CFLAGS) $@/01-Stat.c -o $@/01-Stat.exe
 
-all: 01-Stat.o 01-Stat.exe 02.1-Write.o 02.1-Write.exe 02.2-Write.o 02.2-Write.exe 03.1-Copy.o 03.1-Copy.exe
-all: 03.2-Copy.o 03.2-Copy.exe 03.STAR-Copy.o 03.STAR-Copy.exe 04-Copy.o 04-Copy.exe 05-Fchown.o 05-Fchown.exe
-all: 06.1-Readdir.o 06.1-Readdir.exe 06.2-Readdir.o 06.2-Readdir.exe 06.3-Getdents.o 06.3-Getdents.exe
-all: 06.4-Recursive6.2.o 06.4-Recursive6.2.exe 07.2-CopyDir.o util.o 07.2-CopyDir.exe 12-ProcInfo.o 12-ProcInfo.exe
+02-Write:
+	$(CC) $(CFLAGS) -c $@/02.1-Write.c -o $@/02.1-Write.o
+	$(CC) $(CFLAGS) -c $(LIB_PATH) -o $(LIB_OBJ)
+	$(CC) $@/02.1-Write.o $(LIB_OBJ) -o $@/02.1-Write.exe
 
-#################################################################
-01-Stat.o: $(SOURCE_PATH1)
-	$(CC) $(CFLAGS) -c $(SOURCE_PATH1) -o $(OBJECT1)
+	$(CC) $(CFLAGS) $@/02.2-Write.c -o $@/02.2-Write.exe
 
-01-Stat.exe: $(OBJECT1)
-	$(CC) $(OBJECT1) -o $(EXECUTABLE1)
-#################################################################
-02.1-Write.o: $(SOURCE_PATH2)
-	$(CC) $(CFLAGS) -c $(SOURCE_PATH2) -o $(OBJECT2)
+03-CopyEntries:
+	$(CC) $(CFLAGS) $@/03.1-Copy.c -o $@/03.1-Copy.exe
+	$(CC) $(CFLAGS) $@/03.2-Copy.c -o $@/03.2-Copy.exe
+	$(CC) $(CFLAGS) $@/03.STAR-Copy.c -o $@/03.STAR-Copy.exe
 
-02.1-Write.exe: $(OBJECT2)
-	$(CC) $(OBJECT2) -o $(EXECUTABLE2)
-#################################################################
-02.2-Write.o: $(SOURCE_PATH3)
-	$(CC) $(CFLAGS) -c $(SOURCE_PATH3) -o $(OBJECT3)
+04-CopyPerm:
+	$(CC) $(CFLAGS) $@/04-Copy.c -o $@/04-Copy.o
 
-02.2-Write.exe: $(OBJECT3)
-	$(CC) $(OBJECT3) -o $(EXECUTABLE3)
-#################################################################
-03.1-Copy.o: $(SOURCE_PATH4)
-	$(CC) $(CFLAGS) -c $(SOURCE_PATH4) -o $(OBJECT4)
+05-CopyOwn:
+	$(CC) $(CFLAGS) -c $@/05-Fchown.c -o $@/05-Fchown.o
+	$(CC) $(CFLAGS) -c $(LIB_PATH) -o $(LIB_OBJ)
+	$(CC) $@/05-Fchown.o $(LIB_OBJ) -o $@/05-Fchown.exe
 
-03.1-Copy.exe: $(OBJECT4)
-	$(CC) $(OBJECT4) -o $(EXECUTABLE4)
-#################################################################
-03.2-Copy.o: $(SOURCE_PATH5)
-	$(CC) $(CFLAGS) -c $(SOURCE_PATH5) -o $(OBJECT5)
+06-Readdir:
+	$(CC) $(CFLAGS) -c $@/06.1-Readdir.c -o $@/06.1-Readdir.o
+	$(CC) $(CFLAGS) -c $(LIB_PATH) -o $(LIB_OBJ)
+	$(CC) $@/06.1-Readdir.o $(LIB_OBJ) -o $@/06.1-Readdir.exe
 
-03.2-Copy.exe: $(OBJECT5)
-	$(CC) $(OBJECT5) -o $(EXECUTABLE5)
-#################################################################
-03.STAR-Copy.o: $(SOURCE_PATH6)
-	$(CC) $(CFLAGS) -c $(SOURCE_PATH6) -o $(OBJECT6)
+	$(CC) $(CFLAGS) -c $@/06.2-Readdir.c -o $@/06.2-Readdir.o
+	$(CC) $(CFLAGS) -c $(LIB_PATH) -o $(LIB_OBJ)
+	$(CC) $@/06.2-Readdir.o $(LIB_OBJ) -o $@/06.2-Readdir.exe
 
-03.STAR-Copy.exe: $(OBJECT6)
-	$(CC) $(OBJECT6) -o $(EXECUTABLE6)
-#################################################################
-04-Copy.o: $(SOURCE_PATH7)
-	$(CC) $(CFLAGS) -c $(SOURCE_PATH7) -o $(OBJECT7)
+	$(CC) $(CFLAGS) -c $@/06.3-Getdents.c -o $@/06.3-Getdents.o
+	$(CC) $(CFLAGS) -c $(LIB_PATH) -o $(LIB_OBJ)
+	$(CC) $@/06.3-Getdents.o $(LIB_OBJ) -o $@/06.3-Getdents.exe
 
-04-Copy.exe: $(OBJECT7)
-	$(CC) $(OBJECT7) -o $(EXECUTABLE7)
-#################################################################
-05-Fchown.o: $(SOURCE_PATH8)
-	$(CC) $(CFLAGS) -c $(SOURCE_PATH8) -o $(OBJECT8)
+	$(CC) $(CFLAGS) -c $@/06.4-Recursive6.2.c -o $@/06.4-Recursive6.2.o
+	$(CC) $(CFLAGS) -c $(LIB_PATH) -o $(LIB_OBJ)
+	$(CC) $@/06.4-Recursive6.2.o $(LIB_OBJ) -o $@/06.4-Recursive6.2.exe
 
-05-Fchown.exe: $(OBJECT8)
-	$(CC) $(OBJECT8) -o $(EXECUTABLE8)
-#################################################################
-06.1-Readdir.o: $(SOURCE_PATH9)
-	$(CC) $(CFLAGS) -c $(SOURCE_PATH9) -o $(OBJECT9)
+07-CopyDir:
+	$(CC) $(CFLAGS) -c $@/07.2-CopyDir.c -o $@/07.2-CopyDir.o
+	$(CC) $(CFLAGS) -c $(LIB_PATH) -o $(LIB_OBJ)
+	$(CC) $@/07.2-CopyDir.o $(LIB_OBJ) -o $@/07.2-CopyDir.exe
 
-06.1-Readdir.exe: $(OBJECT9)
-	$(CC) $(OBJECT9) -o $(EXECUTABLE9)
-#################################################################
-06.2-Readdir.o: $(SOURCE_PATH10)
-	$(CC) $(CFLAGS) -c $(SOURCE_PATH10) -o $(OBJECT10)
+09-Statvfs: 
+	$(CC) $(CFLAGS) $@/09-Statvfs.c -o $@/09-Statvfs.exe
 
-06.2-Readdir.exe: $(OBJECT10)
-	$(CC) $(OBJECT10) -o $(EXECUTABLE10)
-#################################################################
-06.3-Getdents.o: $(SOURCE_PATH11)
-	$(CC) $(CFLAGS) -c $(SOURCE_PATH11) -o $(OBJECT11)
+10-Inotify:
+	$(CC) $(CFLAGS) $@/10-Inotify.c -o $@/10-Inotify.exe
+	$(CC) $(CFLAGS) $@/10-Inotify_CRT_DEL.c -o $@/10-Inotify_CRT_DEL.exe
 
-06.3-Getdents.exe: $(OBJECT11)
-	$(CC) $(OBJECT11) -o $(EXECUTABLE11)
-#################################################################
-06.4-Recursive6.2.o: $(SOURCE_PATH12)
-	$(CC) $(CFLAGS) -c $(SOURCE_PATH12) -o $(OBJECT12)
+11-Flock:
+	$(CC) $(CFLAGS) $@/11-Flock.c -o $@/11-Flock.exe
 
-06.4-Recursive6.2.exe: $(OBJECT12)
-	$(CC) $(OBJECT12) -o $(EXECUTABLE12)
-#################################################################
-07.2-CopyDir.o: $(SOURCE_PATH13)
-	$(CC) $(CFLAGS) -c $(SOURCE_PATH13) -o ./07-CopyDir/07.2-CopyDir.o
+12-ProcessInfo:
+	$(CC) $(CFLAGS) $@/12-ProcInfoSelf.c -lcap -lprocps -o $@/12-ProcInfoSelf.exe
+	$(CC) $(CFLAGS) $@/12-ProcInfo.c -lcap -lprocps -o $@/12-ProcInfo.exe
 
-util.o: $(LIB_PATH)
-	$(CC) $(CFLAGS) -c $(LIB_PATH) -o ./Library/util.o
+13-Wait:
+	$(CC) $(CFLAGS) $@/13.1-Wait.c -o $@/13.1-Wait.exe
 
-07.2-CopyDir.exe: ./07-CopyDir/07.2-CopyDir.o ./Library/util.o
-	$(CC) $(OBJECT13) -o $(EXECUTABLE13) 
-#################################################################
-12-ProcInfo.o: $(SOURCE_PATH17)
-	$(CC) $(CFLAGS) -c $(SOURCE_PATH17) -o $(OBJECT17)
-
-12-ProcInfo.exe: $(OBJECT17)
-	$(CC) $(OBJECT17) -lcap -lprocps -o $(EXECUTABLE17)
-#################################################################
+15-Signals:
+	$(CC) $(CFLAGS) $@/15.1-Sigaction.c -o $@/15.1-Sigaction.exe
+	$(CC) $(CFLAGS) $@/15.2-Termination10.c -o $@/15.2-Termination10.exe
+	$(CC) $(CFLAGS) $@/15.2-Termination10_CRT_DEL.c -o $@/15.2-Termination10_CRT_DEL.exe
 
 .SILENT clean:
 	rm -rf */*.exe

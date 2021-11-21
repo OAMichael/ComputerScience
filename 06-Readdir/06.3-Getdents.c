@@ -7,6 +7,7 @@
 #include <sys/stat.h>
 #include <unistd.h>
 #include <fcntl.h>
+#include "../Library/util.h"
 
 
 struct linux_dirent64 
@@ -17,38 +18,6 @@ struct linux_dirent64
     unsigned char  d_type;   /* File type */
     char           d_name[]; /* Filename (null-terminated) */
 };
-
-
-unsigned char dtype_char(unsigned dtype)
-{
-    switch (dtype)
-    {
-        case DT_BLK:    return 'b';
-        case DT_CHR:    return 'c';
-        case DT_DIR:    return 'd';
-        case DT_FIFO:   return 'p';
-        case DT_LNK:    return 'l';
-        case DT_REG:    return '-';
-        case DT_SOCK:   return 's';
-    }
-    return '?';
-}
-
-
-unsigned char mode_char(unsigned mode)
-{
-    switch (mode & S_IFMT)
-    {
-        case S_IFBLK:   return 'b';
-        case S_IFCHR:   return 'c';
-        case S_IFDIR:   return 'd';
-        case S_IFIFO:   return 'p';
-        case S_IFLNK:   return 'l';
-        case S_IFREG:   return '-';
-        case S_IFSOCK:  return 's';
-    }
-    return '?';
-}
 
 
 int main(int argc, char* argv[])
@@ -100,7 +69,7 @@ int main(int argc, char* argv[])
                     printf("?");
                 }
                 else
-                    entry->d_type = mode_char(sb.st_mode);
+                    entry->d_type = (unsigned char)mode_char(sb.st_mode);
             }
 
             printf("%c|", dtype_char(entry->d_type));

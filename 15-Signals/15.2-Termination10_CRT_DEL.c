@@ -4,7 +4,26 @@
 #include <sys/inotify.h>
 #include <unistd.h>
 #include <string.h>
+#include <signal.h>
 #include <poll.h>
+
+
+#define NUMBER_OF_SIGNALS 32
+
+
+volatile int g_last_signal = 0;
+volatile siginfo_t* g_from_who;
+
+
+void sig_handler(int signum, siginfo_t* info, void* ucontext)
+{
+    g_last_signal = signum;
+    g_from_who = info;
+
+    // Just because it is useless for this program
+    if(ucontext != NULL)
+        ucontext = NULL;
+}
 
 
 static ssize_t handle_events(int fd, int wd, const char* dir_name)
@@ -41,12 +60,6 @@ static ssize_t handle_events(int fd, int wd, const char* dir_name)
                printf("Created:  ");
             if (event->mask & IN_DELETE)
                printf("Deleted:  ");
-            if (event->mask & IN_ACCESS)
-               printf("Accessed: ");
-            if (event->mask & IN_OPEN)
-               printf("Opened:   ");
-            if (event->mask & IN_MODIFY)
-               printf("Modified: ");
 
             // Print name of the directory
             if (wd == event->wd) 
@@ -72,6 +85,8 @@ static ssize_t handle_events(int fd, int wd, const char* dir_name)
 
 int main(int argc, char* argv[])
 {
+    int result = 0;
+
     const char* dir_name = ".";
     int fd = 0, 
         wd = 0, 
@@ -81,6 +96,58 @@ int main(int argc, char* argv[])
     struct pollfd fds[2];
 
     char input_buf[4096];
+
+    // All signals
+    const int signals[NUMBER_OF_SIGNALS] = 
+    {
+        SIGABRT,
+        SIGALRM,
+        SIGBUS,
+        SIGCHLD,
+        SIGCLD,
+        SIGCONT,
+        SIGFPE,
+        SIGHUP,
+        SIGILL,
+        SIGINT,
+        SIGIO,
+        SIGIOT,
+        SIGPIPE,
+        SIGPOLL,
+        SIGPROF,
+        SIGPWR,
+        SIGQUIT,
+        SIGSEGV,
+        SIGSTKFLT,
+        SIGTSTP,
+        SIGSYS,
+        SIGTERM,
+        SIGTRAP,
+        SIGTTIN,
+        SIGTTOU,
+        SIGURG,
+        SIGUSR1,
+        SIGUSR2,
+        SIGVTALRM,
+        SIGXCPU,
+        SIGXFSZ,
+        SIGWINCH
+    };
+
+    struct sigaction recieved_signals = {};
+
+    recieved_signals.sa_flags = SA_SIGINFO;
+    recieved_signals.sa_sigaction = sig_handler;
+
+
+    for(int i = 0; i < NUMBER_OF_SIGNALS; i++)
+    {
+        if(sigaction(signals[i], &recieved_signals, NULL) < 0)
+        {
+            perror("sigaction");
+            result = -1;
+        }
+    }
 
     // by default dir_name is current directory
     // if it is not the case, change dir_name
@@ -98,7 +165,7 @@ int main(int argc, char* argv[])
     }
 
     // adding watch
-    wd = inotify_add_watch(fd, dir_name, IN_ACCESS | IN_CREATE | IN_DELETE | IN_OPEN | IN_MODIFY);
+    wd = inotify_add_watch(fd, dir_name, IN_CREATE | IN_DELETE);
     if (wd == -1) 
     {
         fprintf(stderr, "Cannot watch '%s': %s\n", dir_name, strerror(errno));
@@ -115,6 +182,26 @@ int main(int argc, char* argv[])
     // reading events in a loop
     while(1)
     {
+        // Checking if a signal was sent
+        if(g_last_signal)
+        {
+            printf("The signal %d (%s) was sent from PID=%d\n", g_last_signal, strsignal(g_last_signal), g_from_who->si_pid);
+
+            if(g_last_signal == SIGTERM)
+            {
+                printf("Terminating...\n");
+                return 0;
+            }
+
+            if(g_last_signal == SIGQUIT)
+            {
+                printf("Exiting...\n");
+                return 0;
+            }
+            
+            g_last_signal = 0;
+        }
+
         // checking for events
         poll_num = poll(fds, nfds, -1);
 
@@ -149,7 +236,7 @@ int main(int argc, char* argv[])
                 }
             }
     
-            // if creating or deleting event has happened
+            // if event has happened
             if (fds[1].revents & POLLIN)
                 if(handle_events(fd, wd, dir_name) < 0)
                 {
@@ -163,10 +250,10 @@ int main(int argc, char* argv[])
     if(close(fd) < 0)
     {
         perror("close");
-        return -1;
+        result = -1;
     }    
 
     printf("Listening for events stopped.\n");
 
-    return 0;
+    return result;
 }

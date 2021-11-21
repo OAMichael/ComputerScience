@@ -3,37 +3,7 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <unistd.h>
-
-char dtype_char(unsigned dtype)
-{
-    switch (dtype)
-    {
-        case DT_BLK:    return 'b';
-        case DT_CHR:    return 'c';
-        case DT_DIR:    return 'd';
-        case DT_FIFO:   return 'p';
-        case DT_LNK:    return 'l';
-        case DT_REG:    return '-';
-        case DT_SOCK:   return 's';
-    }
-    return '?';
-}
-
-
-char mode_char(unsigned mode)
-{
-    switch (mode & S_IFMT)
-    {
-        case S_IFBLK:   return 'b';
-        case S_IFCHR:   return 'c';
-        case S_IFDIR:   return 'd';
-        case S_IFIFO:   return 'p';
-        case S_IFLNK:   return 'l';
-        case S_IFREG:   return '-';
-        case S_IFSOCK:  return 's';
-    }
-    return '?';
-}
+#include "../Library/util.h"
 
 
 int main(void)

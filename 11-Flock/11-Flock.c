@@ -12,11 +12,11 @@
 
 int main(void)
 {
-    const char* file_name = "FILE_COUNTER";
+    const char* file_name = "FILE_COUNTER.txt";
     int fd = 0;
     int counter = 1;
     
-    char buf[sizeof("99999999999")];         // Up to 99999999999 of openings
+    char buf[sizeof("99999999999")];         // Up to 99999999999 openings
     memset(buf, 0, sizeof(buf));
     
     fd = open(file_name, O_RDWR | O_CREAT, 0777);

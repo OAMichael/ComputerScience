@@ -8,21 +8,7 @@
 
 #include <unistd.h>
 
-
-ssize_t writeall(int fd, const void* buf, size_t count)
-{
-    size_t bytes_written = 0;
-    const uint8_t* buf_addr = buf;
-    while (bytes_written < count)
-    {
-        ssize_t res = write(fd, buf_addr + bytes_written, count - bytes_written);
-        if(res < 0)
-            return res;
-        
-        bytes_written += (size_t)res;
-    }
-    return (ssize_t)bytes_written;
-}
+#include "../Library/util.h"
 
 
 int main(int argc, char* argv[])

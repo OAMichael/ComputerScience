@@ -1,16 +1,3 @@
-#define DIR_MODE 0777
-#define BLCSZ 4096
-
-#include <stdio.h>
-#include <stdlib.h>
-#include <stdint.h>
-#include <dirent.h>
-#include <sys/types.h>
-#include <sys/stat.h>
-#include <unistd.h>
-#include <fcntl.h>
-#include <string.h>
-#include <errno.h>
 #include "util.h"
 
 

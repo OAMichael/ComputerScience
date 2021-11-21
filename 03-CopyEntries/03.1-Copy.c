@@ -11,6 +11,7 @@
 #include <unistd.h>
 
 
+// Do not include Library because copying functions differ
 ssize_t writeall(int fd, const void* buf, size_t count)
 {
     size_t bytes_written = 0;
@@ -71,7 +72,7 @@ int main(int argc, char* argv[])
     }
 
     // Failure if file is not type of regular
-    if(S_ISREG(sb.st_mode)) 
+    if(!S_ISREG(sb.st_mode)) 
     {
         fprintf(stderr, "Copied file is not 'Regular' type\n");
         return 3;
