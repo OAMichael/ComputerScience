@@ -5,9 +5,9 @@ CFLAGS = -O3 -Wall -Werror -Wextra -Wnarrowing -Wconversion -Wwrite-strings -Wca
 LIB_PATH = ./Library/util.c
 LIB_OBJ  = ./Library/util.o
 
-.PHONY: 01-Stat	02-Write 03-CopyEntries 04-CopyPerm 05-CopyOwn 06-Readdir 07-CopyDir 09-Statvfs 10-Inotify 11-Flock 12-ProcessInfo 13-Wait 15-Signals
+.PHONY: 01-Stat	02-Write 03-CopyEntries 04-CopyPerm 05-CopyOwn 06-Readdir 07-CopyDir 09-Statvfs 10-Inotify 11-Flock 12-ProcessInfo 13-Wait 15-Signals 16-MsgQueue 17-Queue
 
-all: 01-Stat 02-Write 03-CopyEntries 04-CopyPerm 05-CopyOwn 06-Readdir 07-CopyDir 09-Statvfs 10-Inotify 11-Flock 12-ProcessInfo 13-Wait 15-Signals
+all: 01-Stat 02-Write 03-CopyEntries 04-CopyPerm 05-CopyOwn 06-Readdir 07-CopyDir 09-Statvfs 10-Inotify 11-Flock 12-ProcessInfo 13-Wait 15-Signals 16-MsgQueue 17-Queue
 
 01-Stat:
 	$(CC) $(CFLAGS) $@/01-Stat.c -o $@/01-Stat.exe
@@ -72,9 +72,34 @@ all: 01-Stat 02-Write 03-CopyEntries 04-CopyPerm 05-CopyOwn 06-Readdir 07-CopyDi
 	$(CC) $(CFLAGS) $@/13.1-Wait.c -o $@/13.1-Wait.exe
 
 15-Signals:
-	$(CC) $(CFLAGS) $@/15.1-Sigaction.c -o $@/15.1-Sigaction.exe
-	$(CC) $(CFLAGS) $@/15.2-Termination10.c -o $@/15.2-Termination10.exe
-	$(CC) $(CFLAGS) $@/15.2-Termination10_CRT_DEL.c -o $@/15.2-Termination10_CRT_DEL.exe
+	$(CC) $(CFLAGS) -c $@/15.1-Sigaction.c -o $@/15.1-Sigaction.o
+	$(CC) $(CFLAGS) -c $(LIB_PATH) -o $(LIB_OBJ)
+	$(CC) $@/15.1-Sigaction.o $(LIB_OBJ) -o $@/15.1-Sigaction.exe
+
+	$(CC) $(CFLAGS) -c $@/15.2-Termination10.c -o $@/15.2-Termination10.o
+	$(CC) $(CFLAGS) -c $(LIB_PATH) -o $(LIB_OBJ)
+	$(CC) $@/15.2-Termination10.o $(LIB_OBJ) -o $@/15.2-Termination10.exe
+
+	$(CC) $(CFLAGS) -c $@/15.2-Termination10_CRT_DEL.c -o $@/15.2-Termination10_CRT_DEL.o
+	$(CC) $(CFLAGS) -c $(LIB_PATH) -o $(LIB_OBJ)
+	$(CC) $@/15.2-Termination10_CRT_DEL.o $(LIB_OBJ) -o $@/15.2-Termination10_CRT_DEL.exe
+
+	$(CC) $(CFLAGS) -c $@/15.STAR-SigReader.c -o $@/15.STAR-SigReader.o
+	$(CC) $(CFLAGS) -c $(LIB_PATH) -o $(LIB_OBJ)
+	$(CC) $@/15.STAR-SigReader.o $(LIB_OBJ) -o $@/15.STAR-SigReader.exe
+
+	$(CC) $(CFLAGS) $@/15.STAR-SigSender.c -o $@/15.STAR-SigSender.exe
+
+16-MsgQueue:
+	$(CC) $(CFLAGS) $@/16-MsgQueue.c -lrt -o $@/16-MsgQueue.exe
+
+17-Queue:
+	$(CC) $(CFLAGS) -c $@/17-QueueReader.c -o $@/17-QueueReader.o
+	$(CC) $(CFLAGS) -c $(LIB_PATH) -o $(LIB_OBJ)
+	$(CC) $@/17-QueueReader.o $(LIB_OBJ) -lrt -o $@/17-QueueReader.exe
+
+	$(CC) $(CFLAGS) $@/17-QueueSender.c -lrt -o $@/17-QueueSender.exe
+
 
 .SILENT clean:
 	rm -rf */*.exe

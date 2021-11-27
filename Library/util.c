@@ -1,5 +1,41 @@
 #include "util.h"
 
+const int __signals__[NUMBER_OF_SIGNALS] = 
+{
+    SIGABRT,
+    SIGALRM,
+    SIGBUS,
+    SIGCHLD,
+    SIGCLD,
+    SIGCONT,
+    SIGFPE,
+    SIGHUP,
+    SIGILL,
+    SIGINT,
+    SIGIO,
+    SIGIOT,
+    SIGPIPE,
+    SIGPOLL,
+    SIGPROF,
+    SIGPWR,
+    SIGQUIT,
+    SIGSEGV,
+    SIGSTKFLT,
+    SIGTSTP,
+    SIGSYS,
+    SIGTERM,
+    SIGTRAP,
+    SIGTTIN,
+    SIGTTOU,
+    SIGURG,
+    SIGUSR1,
+    SIGUSR2,
+    SIGVTALRM,
+    SIGXCPU,
+    SIGXFSZ,
+    SIGWINCH
+};
+
 
 ssize_t writeall(int fd, const void* buf, size_t count)
 {
