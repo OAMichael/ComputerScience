@@ -7,7 +7,7 @@
 #include "../Library/util.h"
 
 
-volatile int g_last_signal = 0;
+volatile int g_last_signal = -1;
 volatile siginfo_t* g_from_who;
 
 void sig_handler(int signum, siginfo_t* info, void* ucontext)
@@ -66,7 +66,7 @@ int main(int argc, char* argv[])
     printf("Messages:\n");
     while(1)
     {
-        if(g_last_signal)
+        if(g_last_signal != -1)
         {
             printf("The signal %d (%s) was sent from PID=%d\n", g_last_signal, strsignal(g_last_signal), g_from_who->si_pid);
 
@@ -82,7 +82,7 @@ int main(int argc, char* argv[])
                 break;
             }
             
-            g_last_signal = 0;
+            g_last_signal = -1;
         }
 
         mq_getattr(queue, &queue_info);

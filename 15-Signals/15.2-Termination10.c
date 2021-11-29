@@ -9,7 +9,7 @@
 #include "../Library/util.h"
 
 
-volatile int g_last_signal = 0;
+volatile int g_last_signal = -1;
 volatile siginfo_t* g_from_who;
 
 
@@ -151,7 +151,7 @@ int main(int argc, char* argv[])
     while(1)
     {
         // Checking if a signal was sent
-        if(g_last_signal)
+        if(g_last_signal != -1)
         {
             printf("The signal %d (%s) was sent from PID=%d\n", g_last_signal, strsignal(g_last_signal), g_from_who->si_pid);
 
@@ -167,7 +167,7 @@ int main(int argc, char* argv[])
                 return 0;
             }
             
-            g_last_signal = 0;
+            g_last_signal = -1;
         }
 
         // checking for events
