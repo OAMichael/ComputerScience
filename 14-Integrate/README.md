@@ -1,4 +1,4 @@
-# Programs which interate mathematical function
+# Programs which integrate mathematical function
 
 ### Both programs calculate definite integral of mathematical function and plot a graph of it. The difference is that `14-Integrate.exe` uses one, main thread, but `14-IntegrateThreads.exe` uses multiple number of threads
 
