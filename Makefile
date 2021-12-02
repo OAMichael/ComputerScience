@@ -70,6 +70,8 @@ all: 01-Stat 02-Write 03-CopyEntries 04-CopyPerm 05-CopyOwn 06-Readdir 07-CopyDi
 
 13-Wait:
 	$(CC) $(CFLAGS) $@/13.1-Wait.c -o $@/13.1-Wait.exe
+	$(CC) $(CFLAGS) $@/13.2-pidfd_open.c -o $@/13.2-pidfd_open.exe
+	$(CC) $(CFLAGS) $@/13.2-ptrace.c -o $@/13.2-ptrace.exe
 
 14-Integrate:
 	$(CC) $(CFLAGS) $@/14-Integrate.c -lm -ldl -o $@/14-Integrate.exe

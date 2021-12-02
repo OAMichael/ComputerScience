@@ -43,6 +43,11 @@ int main(int argc, char* argv[])
         while(1) 
         {
             res = waitpid(-1, &status, WUNTRACED | WCONTINUED);
+            if(res < 0)
+            {
+                perror("waitpid");
+                return -1;
+            }
             
             if(WIFSTOPPED(status))
             {
