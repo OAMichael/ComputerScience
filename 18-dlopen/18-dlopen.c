@@ -7,9 +7,6 @@
 #include <math.h>
 
 
-#define MAX_SETTINGS_LENGHT 65535   // 2 << 16 - 1
-
-
 typedef struct {
     double (*function)(double);
     

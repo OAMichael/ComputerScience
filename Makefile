@@ -5,9 +5,9 @@ CFLAGS = -O3 -Wall -Werror -Wextra -Wnarrowing -Wconversion -Wwrite-strings -Wca
 LIB_PATH = ./Library/util.c
 LIB_OBJ  = ./Library/util.o
 
-.PHONY: 01-Stat	02-Write 03-CopyEntries 04-CopyPerm 05-CopyOwn 06-Readdir 07-CopyDir 09-Statvfs 10-Inotify 11-Flock 12-ProcessInfo 13-Wait 14-Integrate 15-Signals 16-MsgQueue 17-Queue 20-Mmap
+.PHONY: 01-Stat	02-Write 03-CopyEntries 04-CopyPerm 05-CopyOwn 06-Readdir 07-CopyDir 09-Statvfs 10-Inotify 11-Flock 12-ProcessInfo 13-Wait 14-Integrate 15-Signals 16-MsgQueue 17-Queue 18-dlopen 19-Threads 20-Mmap
 
-all: 01-Stat 02-Write 03-CopyEntries 04-CopyPerm 05-CopyOwn 06-Readdir 07-CopyDir 09-Statvfs 10-Inotify 11-Flock 12-ProcessInfo 13-Wait 14-Integrate 15-Signals 16-MsgQueue 17-Queue 20-Mmap
+all: 01-Stat 02-Write 03-CopyEntries 04-CopyPerm 05-CopyOwn 06-Readdir 07-CopyDir 09-Statvfs 10-Inotify 11-Flock 12-ProcessInfo 13-Wait 14-Integrate 15-Signals 16-MsgQueue 17-Queue 18-dlopen 19-Threads 20-Mmap
 
 01-Stat:
 	$(CC) $(CFLAGS) $@/01-Stat.c -o $@/01-Stat.exe
@@ -105,6 +105,12 @@ all: 01-Stat 02-Write 03-CopyEntries 04-CopyPerm 05-CopyOwn 06-Readdir 07-CopyDi
 	$(CC) $@/17-QueueReader.o $(LIB_OBJ) -lrt -o $@/17-QueueReader.exe
 
 	$(CC) $(CFLAGS) $@/17-QueueSender.c -lrt -o $@/17-QueueSender.exe
+
+18-dlopen:
+	$(CC) $(CFLAGS) $@/18-dlopen.c -lm -ldl -o $@/18-dlopen.exe
+
+19-Threads:
+	$(CC) $(CFLAGS) $@/19.1-Mutex.c -lm -pthread -o $@/19.1-Mutex.exe
 
 20-Mmap:
 	$(CC) $(CFLAGS) $@/20.0.c -lrt -o $@/20.0.exe
