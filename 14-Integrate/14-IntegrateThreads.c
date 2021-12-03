@@ -96,7 +96,7 @@ int main(int argc, char* argv[])
     pid_t child_id = fork();
     if(child_id < 0)
     { 
-        perror("fork_1");
+        perror("fork");
         return 3;
     }
 

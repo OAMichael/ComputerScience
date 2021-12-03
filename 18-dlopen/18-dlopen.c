@@ -8,7 +8,6 @@
 
 
 #define MAX_SETTINGS_LENGHT 65535   // 2 << 16 - 1
-//#define TEST_INTEGRAL             // Uncomment this line to test only integral
 
 
 typedef struct {
@@ -164,31 +163,6 @@ int main(int argc, char* argv[])
 
         dlclose(tmplib);
 
-#ifdef TEST_INTEGRAL
-    
-    return 0;
-
-#endif
-        
-        // gnuplot call
-        char settings[MAX_SETTINGS_LENGHT] = {}; 
-        
-        snprintf(settings, sizeof(settings),   "set grid;\
-                              set terminal wxt size 1200, 900;\
-                              set samples %lu;\
-                              set xlabel 'X';\
-                              set ylabel 'Y';\
-                              set xrange [%s:%s];\
-                              set zeroaxis linetype 2;\
-                              set title '%s';\
-                              plot %s", integr.points, argv[2], argv[3], argv[1], argv[1]);
-        
-        execlp("gnuplot", 
-               "gnuplot", "-p", "-e", 
-                settings, NULL);
-
-        perror("execlp");
     }
-
     return 0;
 }
