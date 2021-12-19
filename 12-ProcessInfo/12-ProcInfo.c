@@ -51,15 +51,12 @@ int main(int argc, char* argv[])
     // The way how to find out either user entered [PID] or not
     if(argc > 1)
     {
-        unsigned letters = 0,
-                 numbers = 0;
+        unsigned numbers = 0;
 
         for(long unsigned i = 0; i < strlen(argv[1]); i++)
         {
             if(isdigit(argv[1][i]))
                 numbers++;
-            else
-                letters++;
         }
 
         if(numbers > 0)

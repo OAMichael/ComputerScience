@@ -4,8 +4,6 @@
 #include <string.h>
 #include <signal.h>
 #include <sys/signalfd.h>
-#include "../Library/util.h"
-
 
 int main(void)
 {
@@ -14,10 +12,7 @@ int main(void)
     sigset_t mask;
     struct signalfd_siginfo sig_info;
 
-    sigemptyset(&mask);
-
-    for(int i = 0; i < NUMBER_OF_SIGNALS; i++)
-        sigaddset(&mask, __signals__[i]);
+    sigfillset(&mask);
 
     // Block signals to be handled by default handler
     if (sigprocmask(SIG_BLOCK, &mask, NULL) == -1)
@@ -32,6 +27,7 @@ int main(void)
     // not nessesary to OR with them too
     while(sig_info.ssi_signo != SIGTERM && sig_info.ssi_signo != SIGQUIT)
     {
+        // read() makes process sleep until a signal has come
         if(read(sig_fd, &sig_info, sizeof(struct signalfd_siginfo)) < 0)
         {
             perror("read");

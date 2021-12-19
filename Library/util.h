@@ -12,29 +12,36 @@
 #include <string.h>
 #include <errno.h>
 #include <signal.h>
+#include <limits.h>
+#include <sys/param.h>
 
 
-#define DIR_MODE 0777
-#define BLCSZ 4096
-#define NUMBER_OF_SIGNALS 32
+#define ALL_PERMS 0777
+#define BLCSZ DEV_BSIZE
 
-
-extern const int __signals__[NUMBER_OF_SIGNALS];
-
+#ifndef SYMLINK_MAX
+#define SYMLINK_MAX _POSIX_SYMLINK_MAX
+#endif
 
 ssize_t writeall(int fd, const void* buf, size_t count);
 
-ssize_t copying(const int fd1, const int fd2, struct stat* sb);
+ssize_t pwriteall(int fd, const void* buf, size_t count, off_t offset);
 
-ssize_t crt_link(const char* pathname, const char* newname);
+int copying_entry(const int fd1, const int fd2);
 
-ssize_t crt_linkat(const int old_fd, const int new_fd, const char* pathname, const char* newname);
+int copying_all(const int fd1, const int fd2, const struct stat* sb);
+
+int pcopying(const int fd1, const int fd2);
+
+int crt_link(const char* pathname, const char* newname);
+
+int crt_linkat(const int old_fd, const int new_fd, const char* pathname, const char* newname);
 
 char dtype_char(unsigned dtype);
 
 char mode_char(unsigned mode);
 
-ssize_t copy_dir(DIR* old_dir, DIR* new_dir);
+int copy_dir(DIR* old_dir, DIR* new_dir);
 
 
 #endif      /*  UTIL_H  */

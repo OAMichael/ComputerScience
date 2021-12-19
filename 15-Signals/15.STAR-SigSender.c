@@ -4,8 +4,6 @@
 #include <string.h>
 #include <signal.h>
 
-#define NUMBER_OF_SIGNALS 34
-
 
 int main(int argc, char* argv[])
 {
@@ -15,7 +13,11 @@ int main(int argc, char* argv[])
         return -1;
     }
 
-    const int signals[NUMBER_OF_SIGNALS] = 
+    // These two arrays left unchanged because strsignal() and sys_siglist[NSIG]
+    // returns/contains description of a signal instead of canonical signal name
+    // For example, strsignal(SIGKILL) returns "Killed" instead of "SIGKILL". 
+    // sys_siglist does the same thing
+    const int signals[NSIG] = 
     {
         SIGABRT,
         SIGALRM,
@@ -53,7 +55,7 @@ int main(int argc, char* argv[])
         SIGSTOP
     };
 
-    const char* str_signals[NUMBER_OF_SIGNALS] = 
+    const char* str_signals[NSIG] = 
     {
         "SIGABRT",
         "SIGALRM",
@@ -93,7 +95,7 @@ int main(int argc, char* argv[])
 
     int sending_signal = -1;
 
-    for(int i = 0; i < NUMBER_OF_SIGNALS; i++)
+    for(int i = 0; i < NSIG; i++)
         if(!strcmp(argv[1], str_signals[i]))
         {
             sending_signal = signals[i];

@@ -45,12 +45,13 @@ int main(int argc, char* argv[])
             return -1;
         }
 
+        // There is not type bool
         char result = 1;
 
         if(sbfs.f_favail < 1)
             result = 0;
 
-        if((long int)(sbfs.f_bavail * sbfs.f_bsize) < sb.st_size)
+        if((unsigned long)sbfs.f_bavail * sbfs.f_bsize < (unsigned long)sb.st_size)
             result = 0;
 
         printf("\nDoes the file fit:                              %s\n", result ? "Yes" : "No");

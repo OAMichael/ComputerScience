@@ -1,13 +1,10 @@
 #include <string.h>
 #include <stdio.h>
 #include <stdint.h>
-
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <fcntl.h>
-
 #include <unistd.h>
-
 #include "../Library/util.h"
 
 
@@ -30,11 +27,7 @@ int main(int argc, char* argv[])
 
     // Writing entered string into file
     if(writeall(fd, argv[2], strlen(argv[2])) < 0)
-    {
-        close(fd);
         perror("Failure while writing");
-        return 3;
-    }
 
     if(close(fd) < 0)
     {

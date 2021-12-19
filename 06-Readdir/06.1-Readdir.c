@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <errno.h>
 #include <dirent.h>
 #include <sys/types.h>
 #include <sys/stat.h>
@@ -20,14 +21,28 @@ int main(void)
 
     while ((entry = readdir(dir_fd)) != NULL)
     {
+        if(errno != 0)
+        {
+            perror("readdir");
+            break;
+        }
+
+        if(!strcmp(entry->d_name, ".") || !strcmp(entry->d_name, ".."))
+            continue;
+
         char entry_type = dtype_char(entry->d_type);
         if(entry_type == '?')
         {
             struct stat sb;
             if(lstat(entry->d_name, &sb) == 0)
                 entry_type = mode_char(sb.st_mode);
+            else
+            {
+                perror("lstat");
+                break;
+            }
         }
-        printf("%c %s\n", entry_type, entry->d_name);
+        printf("%c| %s\n", entry_type, entry->d_name);
     }
 
     closedir(dir_fd);

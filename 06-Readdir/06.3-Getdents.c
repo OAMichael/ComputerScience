@@ -60,16 +60,21 @@ int main(int argc, char* argv[])
         {
             entry = (struct linux_dirent64*) (buf + pos);
 
-            if(entry->d_type == '?')
+            if(!strcmp(entry->d_name, ".") || !strcmp(entry->d_name, ".."))
+            {
+                pos += entry->d_reclen;
+                continue;
+            }
+
+            if(entry->d_type == DT_UNKNOWN)
             {
                 struct stat sb;
                 if(fstatat(dir_fd, entry->d_name, &sb, AT_SYMLINK_NOFOLLOW) < 0)
                 {
                     perror("fstatat");
-                    printf("?");
                 }
                 else
-                    entry->d_type = (unsigned char)mode_char(sb.st_mode);
+                    entry->d_type = IFTODT(sb.st_mode);
             }
 
             printf("%c|", dtype_char(entry->d_type));

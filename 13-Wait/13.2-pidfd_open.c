@@ -28,6 +28,7 @@ void proc_info(const char* procname)
 
 int main(void)
 {
+    pid_t parent_pid = getpid();
     pid_t child_id = fork();
     if(child_id < 0)
     {
@@ -39,8 +40,6 @@ int main(void)
     {
         /* this code is executed in child process only */
         proc_info("Child");
-
-        pid_t parent_pid = getppid();
 
         int pidfd = pidfd_open(parent_pid, 0);
 

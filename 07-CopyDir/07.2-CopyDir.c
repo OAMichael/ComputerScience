@@ -33,7 +33,7 @@ int main(int argc, char* argv[])
 
     // if directory with name <new_dir_name> already exists, then it will be
     // just opened. Otherwise, it will be created by mkdir()
-    if(mkdir(new_dir_name, DIR_MODE) < 0 && errno != EEXIST)
+    if(mkdir(new_dir_name, ALL_PERMS) < 0 && errno != EEXIST)
     {
         perror("mkdir");
         return -1;

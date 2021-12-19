@@ -3,6 +3,7 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <unistd.h>
+#include <string.h>
 #include <fcntl.h>
 #include "../Library/util.h"
 
@@ -29,6 +30,15 @@ int main(int argc, char* argv[])
 
     while ((entry = readdir(dir_fd)) != NULL)
     {
+        if(errno != 0)
+        {
+            perror("readdir");
+            break;
+        }
+
+        if(!strcmp(entry->d_name, ".") || !strcmp(entry->d_name, ".."))
+            continue;
+
         char entry_type = dtype_char(entry->d_type);
         if(entry_type == '?')
         {
@@ -36,12 +46,11 @@ int main(int argc, char* argv[])
             if(fstatat(fd, entry->d_name, &sb, AT_SYMLINK_NOFOLLOW) < 0)
             {
                 perror("fstatat");
-                printf("?");
             }
             else
                 entry_type = mode_char(sb.st_mode);
         }
-        printf("%c %s\n", entry_type, entry->d_name);
+        printf("%c| %s\n", entry_type, entry->d_name);
     }
 
     closedir(dir_fd);

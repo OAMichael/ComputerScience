@@ -1,12 +1,17 @@
 #define _GNU_SOURCE
-#define PERMS_BITS 1023
+#define ALL_PERMS 1023
 #include <sys/types.h>
 #include <sys/stat.h>
+#include <stdint.h>
 #include <time.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <sys/sysmacros.h>
 
+#ifndef S_BLKSIZE
+#include <sys/param.h>
+#define S_BLKSIZE DEV_BSIZE
+#endif
 
 //my_ctime() was made because strftime() does not print nanocesonds
 //thus, my_ctime() corrects it
@@ -57,13 +62,14 @@ void perms(char* buf, const unsigned mode)
     buf[6] = mode & S_IROTH ? 'r' : '-';
     buf[7] = mode & S_IWOTH ? 'w' : '-';
     buf[8] = mode & S_IXOTH ? 'x' : '-';
+    buf[9] = '\0';
 }
 
 
 int main(int argc, char *argv[])
 {
    struct stat sb;
-   char string[sizeof("YYYY-mm-dd HH:MM:SS.nnnnnnnnn +hhmm")];
+   char string[sizeof("YYYY-mm-dd HH:MM:SS.nnnnnnnnn +hhmm ")];
    char perm_str[sizeof("rwxrwxrwx")];
 
    if (argc != 2) 
@@ -93,7 +99,7 @@ int main(int argc, char *argv[])
    printf("Link count:               %ld\n", (long) sb.st_nlink);
 
    perms(perm_str, sb.st_mode);
-   printf("Access:                   %o/%s\n", sb.st_mode & PERMS_BITS, perm_str);
+   printf("Access:                   %04o/%s\n", sb.st_mode & ALL_PERMS, perm_str);
 
    printf("Ownership:                UID=%ld   GID=%ld\n",
            (long) sb.st_uid, (long) sb.st_gid);
@@ -102,8 +108,8 @@ int main(int argc, char *argv[])
            (long) sb.st_blksize);
    printf("File size:                %lld bytes\n",
            (long long) sb.st_size);
-   printf("Blocks allocated:         %lld\n",
-           (long long) sb.st_blocks);
+   printf("Space allocated:          %ju blocks (%ju bytes)\n",
+           (uintmax_t) sb.st_blocks, (uintmax_t) sb.st_blocks * S_BLKSIZE);
 
    tzset();
 

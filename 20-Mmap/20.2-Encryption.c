@@ -7,7 +7,7 @@
 
 int main(int argc, char* argv[])
 {
-    char key = 'a';
+    char key = 0;
 
     if(argc < 2)
     {

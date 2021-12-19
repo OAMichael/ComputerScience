@@ -6,21 +6,18 @@
 #include <string.h>
 #include <signal.h>
 #include <poll.h>
-#include "../Library/util.h"
 
-
-volatile int g_last_signal = -1;
-volatile siginfo_t* g_from_who;
-
+volatile int g_last_signal;
+volatile siginfo_t g_from_who;
 
 void sig_handler(int signum, siginfo_t* info, void* ucontext)
 {
     g_last_signal = signum;
-    g_from_who = info;
-
+    g_from_who.si_pid = info->si_pid;
+    g_from_who.si_uid = info->si_uid;
+    
     // Just because it is useless for this program
-    if(ucontext != NULL)
-        ucontext = NULL;
+    ucontext = (void*)ucontext;
 }
 
 
@@ -58,6 +55,8 @@ static ssize_t handle_events(int fd, int wd, const char* dir_name)
                printf("Created:  ");
             if (event->mask & IN_DELETE)
                printf("Deleted:  ");
+            if (event->mask & IN_MOVE)
+               printf("Moved:    ");
 
             // Print name of the directory
             if (wd == event->wd) 
@@ -97,14 +96,16 @@ int main(int argc, char* argv[])
 
     struct sigaction recieved_signals = {};
 
-    recieved_signals.sa_flags = SA_SIGINFO;
+    recieved_signals.sa_flags = SA_SIGINFO | SA_RESTART;
     recieved_signals.sa_sigaction = sig_handler;
 
     
-    // __signals__ and NUMBER_OF_SIGNALS defined in util.h
-    for(int i = 0; i < NUMBER_OF_SIGNALS; i++)
+    for(int i = 1; i < NSIG; i++)
     {
-        if(sigaction(__signals__[i], &recieved_signals, NULL) < 0)
+        if(i == SIGKILL || i == SIGSTOP)
+            continue;
+
+        if(sigaction(i, &recieved_signals, NULL) < 0)
         {
             perror("sigaction");
             result = -1;
@@ -127,7 +128,7 @@ int main(int argc, char* argv[])
     }
 
     // adding watch
-    wd = inotify_add_watch(fd, dir_name, IN_CREATE | IN_DELETE);
+    wd = inotify_add_watch(fd, dir_name, IN_CREATE | IN_DELETE | IN_MOVE);
     if (wd == -1) 
     {
         fprintf(stderr, "Cannot watch '%s': %s\n", dir_name, strerror(errno));
@@ -145,9 +146,9 @@ int main(int argc, char* argv[])
     while(1)
     {
         // Checking if a signal was sent
-        if(g_last_signal != -1)
+        if(errno == EINTR)
         {
-            printf("The signal %d (%s) was sent from PID=%d\n", g_last_signal, strsignal(g_last_signal), g_from_who->si_pid);
+            printf("The signal %d (%s) was sent from PID=%d (UID=%d)\n", g_last_signal, strsignal(g_last_signal), g_from_who.si_pid, g_from_who.si_uid);
 
             if(g_last_signal == SIGTERM)
             {
@@ -159,9 +160,9 @@ int main(int argc, char* argv[])
             {
                 printf("Exiting...\n");
                 return 0;
-            }
-            
-            g_last_signal = -1;
+            }      
+            errno = 0;
+            continue;      
         }
 
         // checking for events

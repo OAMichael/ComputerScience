@@ -50,7 +50,6 @@ int main(int argc, char* argv[])
         printf("'%s'\n", message);
     }
 
-
     // clean up
     mq_unlink(argv[1]);
     mq_close(queue);

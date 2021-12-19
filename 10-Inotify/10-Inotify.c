@@ -47,6 +47,8 @@ static ssize_t handle_events(int fd, int wd, const char* dir_name)
                printf("Opened:   ");
             if (event->mask & IN_MODIFY)
                printf("Modified: ");
+            if (event->mask & IN_MOVE)
+               printf("Moved:    ");
 
             // Print name of the directory
             if (wd == event->wd) 
@@ -98,7 +100,7 @@ int main(int argc, char* argv[])
     }
 
     // adding watch
-    wd = inotify_add_watch(fd, dir_name, IN_ACCESS | IN_CREATE | IN_DELETE | IN_OPEN | IN_MODIFY);
+    wd = inotify_add_watch(fd, dir_name, IN_ACCESS | IN_CREATE | IN_DELETE | IN_OPEN | IN_MODIFY | IN_MOVE);
     if (wd == -1) 
     {
         fprintf(stderr, "Cannot watch '%s': %s\n", dir_name, strerror(errno));

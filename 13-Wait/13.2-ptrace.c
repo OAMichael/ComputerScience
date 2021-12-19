@@ -17,6 +17,7 @@ void proc_info(const char* procname)
 
 int main(void)
 {
+    pid_t parent_pid = getpid();
     pid_t child_id = fork();
     if(child_id < 0)
     {
@@ -29,8 +30,6 @@ int main(void)
         /* this code is executed in child process only */
         proc_info("Child");
 
-        pid_t parent_pid = getppid();
-
         if(ptrace(PTRACE_SEIZE, parent_pid, 0, 0) < 0)
         {
             perror("ptrace");
@@ -42,16 +41,23 @@ int main(void)
 
         while(1) 
         {
-            res = waitpid(-1, &status, __WALL);
+            res = waitpid(-1, &status, WCONTINUED | WSTOPPED);
             if(res < 0)
             {
                 perror("waitpid");
                 return -1;
             }
-                
+            
+            if(WIFEXITED(status))
+            {
+                printf("Parent (PID=%d) has ended its execution\n", parent_pid);  
+                break;
+            }
+
             if(WIFSTOPPED(status))
             {
-                printf("Parent (PID=%d) has been stopped by signal %d (%s)\n", res, WSTOPSIG(status), strsignal(WSTOPSIG(status)));
+                printf("Parent (PID=%d) has caught a signal %d (%s)\n", res, WSTOPSIG(status), strsignal(WSTOPSIG(status)));
+                ptrace(PTRACE_CONT, parent_pid, 0, 0);
             }
         }        
         return 0;

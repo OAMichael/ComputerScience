@@ -15,7 +15,7 @@ int main(int argc, char* argv[])
     }
 
     // opening the queue
-    mqd_t queue = mq_open(argv[1], O_WRONLY | O_EXCL);
+    mqd_t queue = mq_open(argv[1], O_WRONLY);
 
     if(queue == (mqd_t) -1)
     {
