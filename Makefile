@@ -1,44 +1,44 @@
-.PHONY: 01-Stat	02-Write 03-CopyEntries 04-CopyPerm 05-CopyOwn 06-Readdir 07-CopyDir 09-Statvfs 10-Inotify 11-Flock 12-ProcessInfo 13-Wait 14-Integrate 15-Signals 16-MsgQueue 17-Queue 18-dlopen 19-Threads 20-Mmap
+all: Stat Write CopyEntries CopyPerm CopyOwn Readdir CopyDir Filefrag Statvfs Inotify Flock ProcessInfo Wait Integrate Signals MsgQueue Queue dlopen Threads Mmap
 
-all: 01-Stat 02-Write 03-CopyEntries 04-CopyPerm 05-CopyOwn 06-Readdir 07-CopyDir 09-Statvfs 10-Inotify 11-Flock 12-ProcessInfo 13-Wait 14-Integrate 15-Signals 16-MsgQueue 17-Queue 18-dlopen 19-Threads 20-Mmap
-
-01-Stat:
+Stat:
 	make -C 01-Stat
-02-Write:
+Write:
 	make -C 02-Write
-03-CopyEntries:
+CopyEntries:
 	make -C 03-CopyEntries
-04-CopyPerm:
+CopyPerm:
 	make -C 04-CopyPerm
-05-CopyOwn:
+CopyOwn:
 	make -C 05-CopyOwn
-06-Readdir:
+Readdir:
 	make -C 06-Readdir
-07-CopyDir:
+CopyDir:
 	make -C 07-CopyDir
-09-Statvfs: 
+Filefrag:
+	make -C 08-Filefrag
+Statvfs: 
 	make -C 09-Statvfs
-10-Inotify:
+Inotify:
 	make -C 10-Inotify
-11-Flock:
+Flock:
 	make -C 11-Flock
-12-ProcessInfo:
+ProcessInfo:
 	make -C 12-ProcessInfo
-13-Wait:
+Wait:
 	make -C 13-Wait
-14-Integrate:
+Integrate:
 	make -C 14-Integrate
-15-Signals:
+Signals:
 	make -C 15-Signals
-16-MsgQueue:
+MsgQueue:
 	make -C 16-MsgQueue
-17-Queue:
+Queue:
 	make -C 17-Queue
-18-dlopen:
+dlopen:
 	make -C 18-dlopen
-19-Threads:
+Threads:
 	make -C 19-Threads
-20-Mmap:
+Mmap:
 	make -C 20-Mmap
 
 .SILENT clean:

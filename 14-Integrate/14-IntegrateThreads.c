@@ -185,7 +185,7 @@ int main(int argc, char* argv[])
 
         integrate_info integr[number_of_threads];
 
-        // Do such a bad stuff because it is possible that (points % number_of_threads != 0)
+        // Do such a bad stuff because it is possible that (points % number_of_threads) != 0
         unsigned long points_ar[number_of_threads];
         points_ar[number_of_threads - 1] = points;
 
@@ -195,23 +195,9 @@ int main(int argc, char* argv[])
             points_ar[number_of_threads - 1] -= points_ar[i];
         }
 
-
-        // Resources and integration information for the main thread
-        integr[number_of_threads - 1].function = tmpfun;
-        integr[number_of_threads - 1].start    = end - per_thread_interval;
-        integr[number_of_threads - 1].end      = end;
-        integr[number_of_threads - 1].points   = points_ar[number_of_threads - 1];
-        integr[number_of_threads - 1].p_total_sum = &total_sum;
-
-        work_area_t work_area_main = {
-            .m = &mutex,
-            .i_ptr = &integr[number_of_threads - 1]
-        };
-
-
         // Spreading integration information among secondary threads
-        work_area_t work_area[number_of_threads - 1];
-        for(int i = 0; i < number_of_threads - 1; i++)
+        work_area_t work_area[number_of_threads];
+        for(int i = 0; i < number_of_threads; i++)
         {
             integr[i].function = tmpfun;
             integr[i].start    = start + i * per_thread_interval;
@@ -223,18 +209,16 @@ int main(int argc, char* argv[])
             work_area[i].i_ptr = &integr[i];
         }
 
-        for(int i = 0; i < number_of_threads - 1; i++)
+        for(int i = 0; i < number_of_threads; i++)
             if((errno = pthread_create(&tids[i], NULL, integrate, &work_area[i])))
             {
                 perror("pthread_create");
                 return -1;
             }
 
-        integrate(&work_area_main);
-
 //===============================================================================================================================
 
-        for(int i = 0; i < number_of_threads - 1; i++)
+        for(int i = 0; i < number_of_threads; i++)
             pthread_join(tids[i], NULL);
 
 

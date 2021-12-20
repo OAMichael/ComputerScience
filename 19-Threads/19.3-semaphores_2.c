@@ -4,7 +4,9 @@
 #include <unistd.h>
 #include <string.h>
 #include <dlfcn.h>
+#include <fcntl.h>
 #include <math.h>
+#include <semaphore.h>
 #include <pthread.h>
 #include <errno.h>
 
@@ -27,7 +29,7 @@ typedef struct
 
 typedef struct 
 {
-    pthread_mutex_t* m;
+    sem_t* sem;
     integrate_info* i_ptr;
 
 } work_area_t;
@@ -63,9 +65,9 @@ void* integrate(void* arg)
 
     local_sum *= dx;
 
-    pthread_mutex_lock(w->m);
+    sem_wait(w->sem);
     *(integral->p_total_sum) += local_sum;
-    pthread_mutex_unlock(w->m);
+    sem_post(w->sem);
 
     return NULL;
 }
@@ -152,8 +154,10 @@ int main(int argc, char* argv[])
 
 //=============================WHOLE THIS BLOCK MADE TO CORRECTLY SPREAD RESOURCES AMONG THE THREADS=============================
 
-    // Initialize mutex
-    pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;
+    const char* sem_name = "semaphore";
+    // Initialize semaphore
+    sem_t* semaphore = sem_open(sem_name, O_CREAT, 0777, 1);
+
     pthread_t tids[number_of_threads];
 
     double start = atof(argv[2]);
@@ -184,7 +188,7 @@ int main(int argc, char* argv[])
         integr[i].points   = points_ar[i];
         integr[i].p_total_sum = &total_sum;
 
-        work_area[i].m = &mutex;
+        work_area[i].sem = semaphore;
         work_area[i].i_ptr = &integr[i];
     }
 
@@ -200,6 +204,8 @@ int main(int argc, char* argv[])
     for(int i = 0; i < number_of_threads; i++)
         pthread_join(tids[i], NULL);
 
+    sem_close(semaphore);
+    sem_unlink(sem_name);
 
     printf("Integral of %s (from x=%s to x=%s) = %lf\n", functions_str[atoi(argv[1]) - 1], argv[2], argv[3], total_sum);
 
